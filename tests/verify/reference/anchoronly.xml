@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <atlas>
-    <sprites_background texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="1 33 110 90" anchor="0.5 0.5" />
-    <sprites_badge texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="123 19 12 12" anchor="0.5 0.5" />
-    <sprites_banner texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="1 1 120 30" anchor="0.5 0.5" />
-    <sprites_chars_boss texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="1 125 96 96" anchor="0.5 0.5" />
-    <sprites_chars_enemy texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="163 95 40 40" anchor="0.5 0.5" />
-    <sprites_chars_hero texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="113 95 48 64" anchor="0.5 0.5" />
-    <sprites_icons_coin texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="195 33 24 24" anchor="0.5 0.5" />
-    <sprites_icons_gem texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="205 95 20 20" anchor="0.5 0.5" />
-    <sprites_icons_heart texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="205 117 16 16" anchor="0.5 0.5" />
-    <sprites_icons_shield texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="195 59 22 18" anchor="0.5 0.5" />
-    <sprites_icons_star texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="163 137 16 16" anchor="0.5 0.5" />
-    <sprites_ui_button texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="113 161 64 32" anchor="0.5 0.5" />
-    <sprites_ui_panel texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="113 33 80 60" anchor="0.5 0.5" />
-    <sprites_ui_slider texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.g9jccFJw4W/anchoronly.png" rect="123 1 100 16" anchor="0.5 0.5" />
+    <sprites_background texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="1 33 110 90" anchor="0.5 0.5" />
+    <sprites_badge texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="140 19 12 12" anchor="0.5 0.5" />
+    <sprites_banner texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="1 1 120 30" anchor="0.5 0.5" />
+    <sprites_chars_boss texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="1 125 96 96" anchor="0.5 0.5" />
+    <sprites_chars_enemy texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="163 95 40 40" anchor="0.5 0.5" />
+    <sprites_chars_hero texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="113 95 48 64" anchor="0.5 0.5" />
+    <sprites_icons_coin texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="195 33 24 24" anchor="0.5 0.5" />
+    <sprites_icons_gem texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="205 95 20 20" anchor="0.5 0.5" />
+    <sprites_icons_heart texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="205 117 16 16" anchor="0.5 0.5" />
+    <sprites_icons_shield texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="195 59 22 18" anchor="0.5 0.5" />
+    <sprites_icons_star texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="163 137 16 16" anchor="0.5 0.5" />
+    <sprites_marker texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="123 19 15 9" anchor="0.46666667 0.44444445" />
+    <sprites_ui_button texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="113 161 64 32" anchor="0.5 0.5" />
+    <sprites_ui_panel texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="113 33 80 60" anchor="0.5 0.5" />
+    <sprites_ui_slider texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/anchoronly.png" rect="123 1 100 16" anchor="0.5 0.5" />
 </atlas>

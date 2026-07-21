@@ -35,6 +35,7 @@ void sConfig::dump() const
 
     // Features
     cLog::Info("Keep hotspot float: {}", toString(keepFloat));
+    cLog::Info("Anchor only:        {}", toString(anchorOnly));
     cLog::Info("Power of Two:       {}", toString(pot));
     cLog::Info("Trim sprites:       {}", toString(trimSprite));
     cLog::Info("Drop extension:     {}", toString(dropExt));

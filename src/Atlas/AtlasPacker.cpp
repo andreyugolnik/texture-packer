@@ -256,10 +256,27 @@ bool AtlasPacker::generateResFile(cFile& file, const std::string& atlasName)
                 : static_cast<uint32_t>(originalSize.height * 0.5f - offset.y)
         };
 
-        out += fmt::format("    <{} texture=\"{}\" rect=\"{} {} {} {}\" hotspot=\"{} {}\" />\n",
+        // Anchor is the hotspot normalized by sprite size, so size * anchor
+        // reproduces the hotspot (integer when keepFloat is off).
+        sHotspot anchor{
+            size.width != 0
+                ? hotspot.x / size.width
+                : 0.0f,
+            size.height != 0
+                ? hotspot.y / size.height
+                : 0.0f
+        };
+
+        std::string hotspotAttr;
+        if (m_config.anchorOnly == false)
+        {
+            hotspotAttr = fmt::format(" hotspot=\"{} {}\"", hotspot.x, hotspot.y);
+        }
+
+        out += fmt::format("    <{} texture=\"{}\" rect=\"{} {} {} {}\"{} anchor=\"{} {}\" />\n",
                            spriteId, atlasName,
                            pos.x, pos.y, size.width, size.height,
-                           hotspot.x, hotspot.y);
+                           hotspotAttr, anchor.x, anchor.y);
     }
 
     file.write(out.c_str(), out.length());

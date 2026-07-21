@@ -133,6 +133,7 @@ echo ""
 
 # Test cases
 run_test single
+run_test anchoronly --anchor-only
 run_test classic   --algorithm=classic
 run_test multi     --multi-atlas --atlas-size=128
 run_test pot       --pot

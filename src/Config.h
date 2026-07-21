@@ -18,6 +18,7 @@ struct sConfig
     bool trimSprite = false;
     bool enableMultiAtlas = false;
     bool keepFloat = false;
+    bool anchorOnly = false;
     bool overlay = false;
     bool alowDupes = false;
     enum class Algorithm

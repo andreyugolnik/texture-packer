@@ -128,6 +128,10 @@ int main(int argc, char* argv[])
         {
             config.enableMultiAtlas = true;
         }
+        else if (isOption(arg, "--anchor-only"))
+        {
+            config.anchorOnly = true;
+        }
         else if (isOption(arg, "-trim")) // FIXME: deprecated, remove after 2025.02.30
         {
             deprecatedOption(arg, "--trim-sprite", "2025.02.30");
@@ -272,6 +276,7 @@ void showHelp(const char* name, const sConfig& config)
     cLog::Info("  INPUT_IMAGE        Input image file or directory (space-separated)");
     cLog::Info("  --algorithm=NAME   Packing algorithm (kdtree or classic, default: {})", sConfig::ToName(config.algorithm));
     cLog::Info("  --allow-dupes      Allow duplicate sprites (default: {})", toString(config.alowDupes));
+    cLog::Info("  --anchor-only      Omit hotspot, keep anchor only (default: {})", toString(config.anchorOnly));
     cLog::Info("  --atlas-size=SIZE  Maximum atlas size (default: {} px)", config.maxAtlasSize);
     cLog::Info("  --atlas=PATH       Output atlas file name (default: PNG)");
     cLog::Info("  --border=SIZE      Add border around sprites (default: {} px)", config.border);

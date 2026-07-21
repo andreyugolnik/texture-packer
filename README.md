@@ -24,6 +24,7 @@ texpacker INPUT_IMAGE [INPUT_IMAGE] <OPTIONS> --atlas=PATH
   INPUT_IMAGE        Input image file or directory (space-separated)
   --algorithm=NAME   Packing algorithm (kdtree or classic, default: kdtree)
   --allow-dupes      Allow duplicate sprites (default: false)
+  --anchor-only      Omit hotspot, keep anchor only (default: false)
   --atlas-size=SIZE  Maximum atlas size (default: 2048 px)
   --atlas=PATH       Output atlas file name (default: PNG)
   --border=SIZE      Add border around sprites (default: 0 px)

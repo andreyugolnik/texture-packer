@@ -128,6 +128,10 @@ int main(int argc, char* argv[])
         {
             config.enableMultiAtlas = true;
         }
+        else if (isOption(arg, "--keep-float"))
+        {
+            config.keepFloat = true;
+        }
         else if (isOption(arg, "--anchor-only"))
         {
             config.anchorOnly = true;

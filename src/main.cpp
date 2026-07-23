@@ -48,77 +48,37 @@ int main(int argc, char* argv[])
         {
             fileList.addPath(trimCount, arg, recurse);
         }
-        else if (isOption(arg, "-o")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--atlas=PATH", "2025.02.30");
-            shiftArg(argc, argv, i, outputAtlasName);
-        }
         else if (isOption(arg, "--atlas="))
         {
             outputAtlasName = arg + ::strlen("--atlas=");
-        }
-        else if (isOption(arg, "-res")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--xml=PATH", "2025.02.30");
-            shiftArg(argc, argv, i, outputResName);
         }
         else if (isOption(arg, "--xml="))
         {
             outputResName = arg + ::strlen("--xml=");
         }
-        else if (isOption(arg, "-prefix")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--prefix=NAME", "2025.02.30");
-            shiftArg(argc, argv, i, resPathPrefix);
-        }
         else if (isOption(arg, "--prefix="))
         {
             resPathPrefix = arg + ::strlen("--prefix=");
-        }
-        else if (isOption(arg, "-b")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--border=SIZE", "2025.02.30");
-            shiftArg(argc, argv, i, config.border);
         }
         else if (isOption(arg, "--border="))
         {
             auto value = arg + ::strlen("--border=");
             config.border = static_cast<uint32_t>(::atoi(value));
         }
-        else if (isOption(arg, "-p")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--padding=SIZE", "2025.02.30");
-            shiftArg(argc, argv, i, config.padding);
-        }
         else if (isOption(arg, "--padding="))
         {
             auto value = arg + ::strlen("--padding=");
             config.padding = static_cast<uint32_t>(::atoi(value));
-        }
-        else if (isOption(arg, "-max")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--atlas-size=SIZE", "2025.02.30");
-            shiftArg(argc, argv, i, config.maxAtlasSize);
         }
         else if (isOption(arg, "--atlas-size="))
         {
             auto value = arg + ::strlen("--atlas-size=");
             config.maxAtlasSize = static_cast<uint32_t>(::atoi(value));
         }
-        else if (isOption(arg, "-tl")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--trim-id=COUNT", "2025.02.30");
-            shiftArg(argc, argv, i, trimCount);
-        }
         else if (isOption(arg, "--trim-id="))
         {
             auto value = arg + ::strlen("--trim-id=");
             trimCount = static_cast<uint32_t>(::atoi(value));
-        }
-        else if (isOption(arg, "-pot")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--pot", "2025.02.30");
-            config.pot = true;
         }
         else if (isOption(arg, "--pot"))
         {
@@ -136,38 +96,18 @@ int main(int argc, char* argv[])
         {
             config.anchorOnly = true;
         }
-        else if (isOption(arg, "-trim")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--trim-sprite", "2025.02.30");
-            config.trimSprite = true;
-        }
         else if (isOption(arg, "--trim-sprite"))
         {
             config.trimSprite = true;
-        }
-        else if (isOption(arg, "-dupes")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--allow-dupes", "2025.02.30");
-            config.alowDupes = true;
         }
         else if (isOption(arg, "--allow-dupes"))
         {
             config.alowDupes = true;
         }
-        else if (isOption(arg, "-slow")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--algorithm=classic", "2025.02.30");
-            config.algorithm = sConfig::Algorithm::Classic;
-        }
         else if (isOption(arg, "--algorithm="))
         {
             auto value = arg + ::strlen("--algorithm=");
             config.algorithm = sConfig::ToAlgorithm(value);
-        }
-        else if (isOption(arg, "-overlay")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--overlay", "2025.02.30");
-            config.overlay = true;
         }
         else if (isOption(arg, "--overlay"))
         {
@@ -175,11 +115,6 @@ int main(int argc, char* argv[])
         }
         else if (isOption(arg, "--no-recurse"))
         {
-            recurse = false;
-        }
-        else if (isOption(arg, "-nr")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--no-recurse", "2025.02.30");
             recurse = false;
         }
         else

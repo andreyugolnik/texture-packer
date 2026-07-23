@@ -24,6 +24,11 @@ public:
         return m_bitmap;
     }
 
+    cBitmap& getBitmap()
+    {
+        return m_bitmap;
+    }
+
     const sOffset& getOffset() const
     {
         return m_offset;

@@ -237,6 +237,10 @@ int main(int argc, char* argv[])
             cLog::Warning("File '{}' not loaded.", f.path);
             break;
 
+        case cImageList::Result::Empty:
+            cLog::Warning("Image '{}' is empty and was skipped.", f.path);
+            break;
+
         case cImageList::Result::TooBig:
             cLog::Error("Image '{}' is too large for the atlas (max size: {} x {}).",
                         f.path,

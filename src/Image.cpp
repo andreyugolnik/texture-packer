@@ -118,10 +118,14 @@ bool cImage::load(const char* path, uint32_t trimPath, cTrim* trim)
     // 2       | grey, alpha
     // 3       | red, green, blue
     // 4       | red, green, blue, alpha
-    int width;
-    int height;
-    int bpp;
+    int width = 0;
+    int height = 0;
+    int bpp = 0;
     m_stbImageData = stbi_load(path, &width, &height, &bpp, 4);
+    if (m_stbImageData == nullptr)
+    {
+        return false;
+    }
 
     m_originalSize = {
         static_cast<uint32_t>(width),
@@ -130,14 +134,11 @@ bool cImage::load(const char* path, uint32_t trimPath, cTrim* trim)
 
     m_bitmap.setBitmap(m_originalSize, m_stbImageData);
 
-    if (m_stbImageData != nullptr && trim != nullptr)
+    if (trim != nullptr && trim->trim(path, m_bitmap))
     {
-        if (trim->trim(path, m_bitmap))
-        {
-            m_bitmap = std::move(trim->getBitmap());
-            m_offset = trim->getOffset();
-        }
+        m_bitmap = std::move(trim->getBitmap());
+        m_offset = trim->getOffset();
     }
 
-    return m_stbImageData != nullptr;
+    return true;
 }

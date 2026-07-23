@@ -30,6 +30,7 @@ public:
         NotAnImage,
         CannotOpen,
         TooBig,
+        Empty,
     };
     Result loadImage(const std::string& path, uint32_t trimCount);
 

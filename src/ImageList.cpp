@@ -104,6 +104,10 @@ cImageList::Result cImageList::loadImage(const std::string& path, uint32_t trimC
 
     auto& bmp = image->getBitmap();
     auto& size = bmp.getSize();
+    if (size.width == 0 || size.height == 0)
+    {
+        return Result::Empty;
+    }
     if (m_size.isFitToMaxSize(size) == false)
     {
         return Result::TooBig;

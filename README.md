@@ -69,7 +69,6 @@ texpacker INPUT_IMAGE [INPUT_IMAGE] <OPTIONS> --atlas=PATH
   --atlas-size=SIZE  Maximum atlas size (default: 2048 px)
   --atlas=PATH       Output atlas file name (default: PNG)
   --border=SIZE      Add border around sprites (default: 0 px)
-  --drop-ext         Remove file extension from sprite ID (default: false)
   --keep-float       Preserve float hotspot coordinates (default: false)
   --multi-atlas      Enable multi-atlas output (default: false)
   --no-recurse       Do not search subdirectories

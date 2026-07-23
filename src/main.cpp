@@ -164,15 +164,6 @@ int main(int argc, char* argv[])
             auto value = arg + ::strlen("--algorithm=");
             config.algorithm = sConfig::ToAlgorithm(value);
         }
-        else if (isOption(arg, "-dropext")) // FIXME: deprecated, remove after 2025.02.30
-        {
-            deprecatedOption(arg, "--drop-ext", "2025.02.30");
-            config.dropExt = true;
-        }
-        else if (isOption(arg, "--drop-ext"))
-        {
-            config.dropExt = true;
-        }
         else if (isOption(arg, "-overlay")) // FIXME: deprecated, remove after 2025.02.30
         {
             deprecatedOption(arg, "--overlay", "2025.02.30");
@@ -288,7 +279,6 @@ void showHelp(const char* name, const sConfig& config)
     cLog::Info("  --atlas-size=SIZE  Maximum atlas size (default: {} px)", config.maxAtlasSize);
     cLog::Info("  --atlas=PATH       Output atlas file name (default: PNG)");
     cLog::Info("  --border=SIZE      Add border around sprites (default: {} px)", config.border);
-    cLog::Info("  --drop-ext         Remove file extension from sprite ID (default: {})", toString(config.dropExt));
     cLog::Info("  --keep-float       Preserve float hotspot coordinates (default: {})", toString(config.keepFloat));
     cLog::Info("  --multi-atlas      Enable multi-atlas output (default: {})", toString(config.enableMultiAtlas));
     cLog::Info("  --no-recurse       Do not search subdirectories");

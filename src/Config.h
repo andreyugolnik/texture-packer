@@ -27,7 +27,6 @@ struct sConfig
         Classic
     };
     Algorithm algorithm = Algorithm::KDTree;
-    bool dropExt = false;
     uint32_t maxAtlasSize = 2048u;
 
     void dump() const;

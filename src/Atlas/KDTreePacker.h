@@ -31,6 +31,9 @@ public:
     explicit KDTreePacker(const sConfig& config);
     ~KDTreePacker() override;
 
+    KDTreePacker(const KDTreePacker&) = delete;
+    KDTreePacker& operator=(const KDTreePacker&) = delete;
+
     static bool Compare(const cImage* a, const cImage* b);
     static bool CompareAlt(const cImage* a, const cImage* b);
 

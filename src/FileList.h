@@ -24,7 +24,7 @@ public:
 
     struct FileInfo
     {
-        uint32_t trimCount;
+        uint32_t trimCount = 0u;
         std::string path;
     };
 

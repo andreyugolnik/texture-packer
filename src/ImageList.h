@@ -24,6 +24,9 @@ public:
     cImageList(const sConfig& config, uint32_t reserve);
     ~cImageList();
 
+    cImageList(const cImageList&) = delete;
+    cImageList& operator=(const cImageList&) = delete;
+
     enum class Result
     {
         OK,

@@ -16,6 +16,9 @@ public:
     cKDNode(const sRect& area, uint32_t padding);
     ~cKDNode();
 
+    cKDNode(const cKDNode&) = delete;
+    cKDNode& operator=(const cKDNode&) = delete;
+
     cKDNode* add(const sSize& size);
 
     const sRect& getRect() const

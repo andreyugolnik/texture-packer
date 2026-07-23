@@ -7,9 +7,11 @@
 \**********************************************/
 
 #include "FileList.h"
+#include "Log.h"
 
 #include <algorithm>
 #include <dirent.h>
+#include <sys/stat.h>
 
 namespace
 {
@@ -63,7 +65,19 @@ void cFileList::addPath(uint32_t trimCount, const std::string& root, bool recurs
     }
     else
     {
-        addFile(trimCount, root);
+        struct stat st;
+        if (::stat(root.c_str(), &st) != 0)
+        {
+            cLog::Warning("Input path '{}' does not exist.", root);
+        }
+        else if (S_ISDIR(st.st_mode))
+        {
+            cLog::Warning("Cannot open directory '{}'.", root);
+        }
+        else
+        {
+            addFile(trimCount, root);
+        }
     }
 }
 

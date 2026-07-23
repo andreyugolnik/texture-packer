@@ -17,8 +17,39 @@
 #include "Types/Types.h"
 
 #include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <fmt/core.h>
+
+namespace
+{
+    // Approximate XML Name check; non-ASCII (UTF-8) bytes are treated as
+    // valid name characters to avoid false warnings on Unicode ids.
+    bool isValidXmlName(const std::string& name)
+    {
+        auto isNameStart = [](unsigned char c) {
+            return std::isalpha(c) != 0 || c == '_' || c == ':' || c >= 0x80;
+        };
+        auto isNameChar = [](unsigned char c) {
+            return std::isalnum(c) != 0 || c == '_' || c == ':' || c == '-' || c == '.' || c >= 0x80;
+        };
+
+        if (name.empty() || isNameStart(static_cast<unsigned char>(name.front())) == false)
+        {
+            return false;
+        }
+
+        for (auto c : name)
+        {
+            if (isNameChar(static_cast<unsigned char>(c)) == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+} // namespace
 
 std::unique_ptr<AtlasPacker> AtlasPacker::create(ImageList& imageList, const sConfig& config)
 {
@@ -242,6 +273,11 @@ bool AtlasPacker::generateResFile(cFile& file, const std::string& atlasName)
 
         auto image = getImageByIndex(idx);
         auto& spriteId = image->getSpriteId();
+
+        if (isValidXmlName(spriteId) == false)
+        {
+            cLog::Warning("Sprite id '{}' is not a valid XML name; the atlas descriptor may fail to parse.", spriteId);
+        }
 
         const auto& rc = getRectByIndex(idx);
         sOffset pos{

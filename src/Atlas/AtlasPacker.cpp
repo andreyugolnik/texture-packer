@@ -323,7 +323,5 @@ bool AtlasPacker::generateResFile(cFile& file, const std::string& atlasName)
                            hotspotAttr, anchor.x, anchor.y);
     }
 
-    file.write(out.c_str(), out.length());
-
-    return true;
+    return file.write(out.c_str(), out.length()) == out.length();
 }

@@ -63,8 +63,8 @@ private:
     bool findBestSortAndSize(ImageList& images, const sSize& startSize, const sSize& maxSize, sSize& outSize);
     bool findMinimalAtlasSize(AtlasPacker* packer, ImageList& images, const sSize& startSize, sSize& outSize);
     bool prepareSize(AtlasPacker* packer, const sSize& atlasSize, const ImageList& images);
-    void writeXmlHeader(cFile& xmlFile, const char* outputResName);
-    void writeXmlFooter(cFile& xmlFile, const char* outputResName);
+    bool writeXmlHeader(cFile& xmlFile, const char* outputResName);
+    bool writeXmlFooter(cFile& xmlFile, const char* outputResName);
 
 private:
     const sConfig& m_config;

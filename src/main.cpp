@@ -206,11 +206,6 @@ int main(int argc, char* argv[])
     sSize atlasSize;
     if (imageList.doPacking(outputAtlasName, outputResName, resPathPrefix, atlasSize) == false)
     {
-        cLog::Info("");
-        cLog::Info("Desired atlas size {} x {}, but maximum {} x {}.",
-                   atlasSize.width, atlasSize.height,
-                   config.maxAtlasSize, config.maxAtlasSize);
-
         return -1;
     }
 

@@ -196,6 +196,12 @@ int main(int argc, char* argv[])
                static_cast<uint32_t>(files.size()),
                (getCurrentTime() - startTime) * 0.001f);
 
+    if (images.empty())
+    {
+        cLog::Warning("No images to pack.");
+        return -1;
+    }
+
     // packing
     sSize atlasSize;
     if (imageList.doPacking(outputAtlasName, outputResName, resPathPrefix, atlasSize) == false)

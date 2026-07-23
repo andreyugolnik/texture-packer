@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
         }
         else if (isOption(arg, "--allow-dupes"))
         {
-            config.alowDupes = true;
+            config.allowDupes = true;
         }
         else if (isOption(arg, "--algorithm="))
         {
@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
     auto startTime = getCurrentTime();
 
     // sort and remove dupes
-    if (config.alowDupes == false)
+    if (config.allowDupes == false)
     {
         fileList.removeDupes();
     }
@@ -227,7 +227,7 @@ void showHelp(const char* name, const sConfig& config)
     cLog::Info("");
     cLog::Info("  INPUT_IMAGE        Input image file or directory (space-separated)");
     cLog::Info("  --algorithm=NAME   Packing algorithm (default: kdtree)");
-    cLog::Info("  --allow-dupes      Allow duplicate sprites (default: {})", toString(config.alowDupes));
+    cLog::Info("  --allow-dupes      Allow duplicate sprites (default: {})", toString(config.allowDupes));
     cLog::Info("  --anchor-only      Omit hotspot, keep anchor only (default: {})", toString(config.anchorOnly));
     cLog::Info("  --atlas-size=SIZE  Maximum atlas size (default: {} px)", config.maxAtlasSize);
     cLog::Info("  --atlas=PATH       Output atlas file name (default: PNG)");

@@ -20,7 +20,7 @@ struct sConfig
     bool keepFloat = false;
     bool anchorOnly = false;
     bool overlay = false;
-    bool alowDupes = false;
+    bool allowDupes = false;
     enum class Algorithm
     {
         KDTree,

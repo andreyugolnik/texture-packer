@@ -38,7 +38,7 @@ void sConfig::dump() const
     cLog::Info("Anchor only:        {}", toString(anchorOnly));
     cLog::Info("Power of Two:       {}", toString(pot));
     cLog::Info("Trim sprites:       {}", toString(trimSprite));
-    cLog::Info("Allow duplicates:   {}", toString(alowDupes));
+    cLog::Info("Allow duplicates:   {}", toString(allowDupes));
     cLog::Info("Overlay:            {}", toString(overlay));
 }
 

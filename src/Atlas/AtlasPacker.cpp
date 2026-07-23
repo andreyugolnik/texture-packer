@@ -241,7 +241,7 @@ bool AtlasPacker::buildAtlas()
 
     makeAtlas(m_config.overlay);
 
-    cTrimRigthBottom trim(m_config);
+    cTrimRightBottom trim(m_config);
     if (trim.trim("atlas", m_atlas))
     {
         m_atlas = std::move(trim.getBitmap());

@@ -37,7 +37,7 @@ public:
 protected:
     bool doTrim(const cBitmap& input, cBitmap& output, sOffset& offset) const;
     uint32_t findLeft(const cBitmap& input) const;
-    uint32_t findRigth(const cBitmap& input) const;
+    uint32_t findRight(const cBitmap& input) const;
     uint32_t findTop(const cBitmap& input) const;
     uint32_t findBottom(const cBitmap& input) const;
 
@@ -46,10 +46,10 @@ protected:
     sOffset m_offset;
 };
 
-class cTrimRigthBottom final : public cTrim
+class cTrimRightBottom final : public cTrim
 {
 public:
-    explicit cTrimRigthBottom(const sConfig& config);
+    explicit cTrimRightBottom(const sConfig& config);
 
     bool trim(const char* path, const cBitmap& input) override;
 

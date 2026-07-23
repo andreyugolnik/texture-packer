@@ -14,7 +14,7 @@
 bool cTrim::doTrim(const cBitmap& input, cBitmap& output, sOffset& offset) const
 {
     auto left = findLeft(input);
-    auto right = findRigth(input);
+    auto right = findRight(input);
     auto top = findTop(input);
     auto bottom = findBottom(input);
 
@@ -91,7 +91,7 @@ uint32_t cTrim::findLeft(const cBitmap& input) const
     return size.width;
 }
 
-uint32_t cTrim::findRigth(const cBitmap& input) const
+uint32_t cTrim::findRight(const cBitmap& input) const
 {
     auto& size = input.getSize();
     for (uint32_t x = 0; x < size.width; x++)
@@ -150,19 +150,19 @@ uint32_t cTrim::findBottom(const cBitmap& input) const
     return 0;
 }
 
-cTrimRigthBottom::cTrimRigthBottom(const sConfig& config)
+cTrimRightBottom::cTrimRightBottom(const sConfig& config)
     : cTrim()
     , m_config(config)
 {
 }
 
-bool cTrimRigthBottom::trim(const char* /*path*/, const cBitmap& input)
+bool cTrimRightBottom::trim(const char* /*path*/, const cBitmap& input)
 {
     m_bitmap.clear();
 
     const auto border = m_config.border;
 
-    const auto width = cAtlasSize::FixSize(findRigth(input) + border, m_config.pot);
+    const auto width = cAtlasSize::FixSize(findRight(input) + border, m_config.pot);
     const auto height = cAtlasSize::FixSize(findBottom(input) + border, m_config.pot);
 
     auto& size = input.getSize();

@@ -135,7 +135,6 @@ echo ""
 run_test single
 run_test anchoronly --anchor-only
 run_test keepfloat  --keep-float
-run_test classic   --algorithm=classic
 run_test multi     --multi-atlas --atlas-size=128
 run_test pot       --pot
 run_test bordered  --border=2 --padding=2

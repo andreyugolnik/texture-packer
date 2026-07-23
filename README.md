@@ -29,7 +29,7 @@ straight into your build scripts and CI pipelines.
 
 ### Packing
 
-- Two packing algorithms: **KD-Tree** (default, better for mixed sizes) and **Classic**.
+- **KD-Tree** rectangle packing, tuned for mixed sprite sizes.
 - **Multi-atlas** output when the sprite set exceeds the maximum atlas size.
 - Optional **power-of-two** atlas dimensions for older GPUs.
 - Configurable **border** and **padding** to prevent texture bleeding.
@@ -63,7 +63,7 @@ texpacker sprites --atlas=game.png --xml=game.xml --trim-sprite --padding=2
 ```sh
 texpacker INPUT_IMAGE [INPUT_IMAGE] <OPTIONS> --atlas=PATH
   INPUT_IMAGE        Input image file or directory (space-separated)
-  --algorithm=NAME   Packing algorithm (kdtree or classic, default: kdtree)
+  --algorithm=NAME   Packing algorithm (default: kdtree)
   --allow-dupes      Allow duplicate sprites (default: false)
   --anchor-only      Omit hotspot, keep anchor only (default: false)
   --atlas-size=SIZE  Maximum atlas size (default: 2048 px)
@@ -106,9 +106,9 @@ Run the verification suite to check atlas output against committed reference fil
 ./tests/verify.sh
 ```
 
-It runs `texpacker` with several configurations (single atlas, multi-atlas, classic
-algorithm, power-of-two, border/padding, anchor-only, keep-float) and compares the
-resulting atlas images and XML metadata byte-for-byte against reference output.
+It runs `texpacker` with several configurations (single atlas, multi-atlas,
+power-of-two, border/padding, anchor-only, keep-float) and compares the resulting
+atlas images and XML metadata byte-for-byte against reference output.
 
 To regenerate reference files after an intentional change in packing behavior:
 

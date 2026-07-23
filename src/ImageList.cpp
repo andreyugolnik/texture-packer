@@ -22,6 +22,7 @@
 #include <fmt/core.h>
 #include <iterator>
 #include <limits>
+#include <unordered_set>
 #include <vector>
 
 namespace
@@ -191,11 +192,13 @@ bool cImageList::packMultiAtlas(const char* desiredAtlasName, const char* output
 
         // Remove packed images from the remaining list
         const auto prevCount = remainingImages.size();
-        for (auto img : packedImages)
-        {
-            remainingImages.erase(std::remove(remainingImages.begin(), remainingImages.end(), img),
-                                  remainingImages.end());
-        }
+        const std::unordered_set<const cImage*> packed(packedImages.begin(), packedImages.end());
+        remainingImages.erase(
+            std::remove_if(remainingImages.begin(), remainingImages.end(),
+                           [&packed](const cImage* img) {
+                               return packed.count(img) != 0;
+                           }),
+            remainingImages.end());
 
         if (remainingImages.size() == prevCount)
         {

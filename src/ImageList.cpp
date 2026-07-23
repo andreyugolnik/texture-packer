@@ -507,7 +507,7 @@ bool cImageList::findMinimalAtlasSize(AtlasPacker* packer, ImageList& images, co
         }
     }
 
-    if (!found)
+    if (found == false)
     {
         return false;
     }

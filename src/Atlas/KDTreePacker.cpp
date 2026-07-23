@@ -199,7 +199,7 @@ bool KDTreePacker::Compare(const cImage* a, const cImage* b)
 #endif
 }
 
-// Alternative sort order (Mode 3): max dimension → area → height.
+// Alternative sort order (Mode 3): max dimension -> area -> height.
 // Wins on some inputs where Compare (Mode 6) loses. Used together
 // with Compare in multi-sort: both orders are tried and the one
 // producing a tighter pack is kept.

@@ -12,7 +12,7 @@
 
 namespace
 {
-    constexpr static struct
+    constexpr struct
     {
         const char* id;
         const char* name;

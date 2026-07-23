@@ -60,7 +60,9 @@ const char* formatNum(int num, char delimiter)
 
 const char* toString(bool enabled)
 {
-    return enabled ? "enabled" : "disabled";
+    return enabled
+        ? "enabled"
+        : "disabled";
 }
 
 bool isOption(const char* arg, const char* name)

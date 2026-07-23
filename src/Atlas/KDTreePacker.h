@@ -48,10 +48,10 @@ public:
 private:
     cKDNode* m_root = nullptr;
 
-    struct sPiece
+    struct Piece
     {
         const cImage* image;
         cKDNode* node;
     };
-    std::vector<sPiece> m_nodes;
+    std::vector<Piece> m_nodes;
 };

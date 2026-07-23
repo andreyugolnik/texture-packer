@@ -23,7 +23,7 @@ bool cAtlasSize::isFitToMaxSize(const sSize& size) const
     auto width = size.width + m_config.border * 2u;
     auto height = size.height + m_config.border * 2u;
 
-    return !(width > m_config.maxAtlasSize || height > m_config.maxAtlasSize);
+    return width <= m_config.maxAtlasSize && height <= m_config.maxAtlasSize;
 }
 
 void cAtlasSize::addRect(const sSize& size)

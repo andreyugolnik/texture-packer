@@ -39,13 +39,13 @@ cImageSaver::Type cImageSaver::getWriter(const std::string& filename) const
         std::string ext = point;
         std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 
-        struct sCompare
+        struct Compare
         {
             Type type;
             const char* ext;
         };
 
-        static const sCompare List[] = {
+        static const Compare List[] = {
             { Type::png, ".png" },
             { Type::bmp, ".bmp" },
             { Type::tga, ".tga" },

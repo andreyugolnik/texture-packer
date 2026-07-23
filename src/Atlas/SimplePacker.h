@@ -17,7 +17,7 @@ class SimplePacker final : public AtlasPacker
 {
 public:
     SimplePacker(const sConfig& config);
-    ~SimplePacker();
+    ~SimplePacker() override;
 
     static bool Compare(const cImage* a, const cImage* b);
 
@@ -33,10 +33,10 @@ private:
     const sRect* checkRegion(const sRect& region) const;
 
 private:
-    struct sPiece
+    struct Piece
     {
         const cImage* image;
         sRect rc;
     };
-    std::vector<sPiece> m_images;
+    std::vector<Piece> m_images;
 };

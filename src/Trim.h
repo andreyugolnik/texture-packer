@@ -51,7 +51,7 @@ class cTrimRigthBottom final : public cTrim
 public:
     explicit cTrimRigthBottom(const sConfig& config);
 
-    virtual bool trim(const char* path, const cBitmap& input) override;
+    bool trim(const char* path, const cBitmap& input) override;
 
 private:
     const sConfig& m_config;

@@ -19,7 +19,9 @@ namespace
     {
         // skip . and ..
 #define DOT_OR_DOTDOT(base) (base[0] == '.' && (base[1] == '\0' || (base[1] == '.' && base[2] == '\0')))
-        return DOT_OR_DOTDOT(p->d_name) ? 0 : 1;
+        return DOT_OR_DOTDOT(p->d_name)
+            ? 0
+            : 1;
     }
 
 } // namespace

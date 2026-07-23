@@ -47,7 +47,7 @@ public:
     virtual const cImage* getImageByIndex(uint32_t idx) const = 0;
     virtual const sRect& getRectByIndex(uint32_t idx) const = 0;
 
-    void buildAtlas();
+    bool buildAtlas();
 
     bool generateResFile(cFile& file, const std::string& atlasName);
 

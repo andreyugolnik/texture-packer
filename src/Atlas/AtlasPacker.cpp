@@ -199,10 +199,15 @@ void AtlasPacker::copyBitmap(const sRect& rc, const cImage* image, bool overlay)
     }
 }
 
-void AtlasPacker::buildAtlas()
+bool AtlasPacker::buildAtlas()
 {
     const auto atlasSize = m_atlas.getSize();
-    m_atlas.createBitmap(atlasSize);
+    if (m_atlas.createBitmap(atlasSize) == false)
+    {
+        cLog::Error("Failed to allocate atlas {} x {}.", atlasSize.width, atlasSize.height);
+        return false;
+    }
+
     makeAtlas(m_config.overlay);
 
     cTrimRigthBottom trim(m_config);
@@ -210,6 +215,8 @@ void AtlasPacker::buildAtlas()
     {
         m_atlas = std::move(trim.getBitmap());
     }
+
+    return true;
 }
 
 bool AtlasPacker::generateResFile(cFile& file, const std::string& atlasName)

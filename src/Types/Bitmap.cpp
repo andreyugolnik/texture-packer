@@ -9,6 +9,7 @@
 #include "Bitmap.h"
 
 #include <algorithm>
+#include <new>
 
 cBitmap::~cBitmap()
 {
@@ -28,18 +29,24 @@ void cBitmap::clear()
     m_data = nullptr;
 }
 
-void cBitmap::createBitmap(const sSize& size)
+bool cBitmap::createBitmap(const sSize& size)
 {
     clear();
 
-    m_size = size;
-
-    m_manageData = true;
     const auto pixelCount = static_cast<size_t>(size.width) * size.height;
-    m_data = new Pixel[pixelCount];
+    m_data = new (std::nothrow) Pixel[pixelCount];
+    if (m_data == nullptr)
+    {
+        return false;
+    }
+
+    m_size = size;
+    m_manageData = true;
 
     // Initialize all pixels to transparent black
     std::fill(m_data, m_data + pixelCount, Pixel{ 0, 0, 0, 0 });
+
+    return true;
 }
 
 void cBitmap::setSize(const sSize& size)
@@ -60,9 +67,8 @@ void cBitmap::setBitmap(const sSize& size, void* data)
 
 cBitmap& cBitmap::operator=(const cBitmap& other)
 {
-    if (this != &other)
+    if (this != &other && createBitmap(other.m_size))
     {
-        createBitmap(other.m_size);
         std::copy(other.getData(), other.getData() + static_cast<size_t>(other.m_size.width) * other.m_size.height, m_data);
     }
 

@@ -40,7 +40,10 @@ bool cTrim::doTrim(const cBitmap& input, cBitmap& output, sOffset& offset) const
     auto width = right - left + 1;
     auto height = bottom - top + 1;
 
-    output.createBitmap({ width, height });
+    if (output.createBitmap({ width, height }) == false)
+    {
+        return false;
+    }
     auto dst = output.getData();
 
     for (uint32_t y = top; y <= bottom; y++)
@@ -172,7 +175,10 @@ bool cTrimRigthBottom::trim(const char* /*path*/, const cBitmap& input)
 
     auto src = input.getData();
 
-    m_bitmap.createBitmap({ width, height });
+    if (m_bitmap.createBitmap({ width, height }) == false)
+    {
+        return false;
+    }
     auto dst = m_bitmap.getData();
 
     for (uint32_t y = 0; y < height; y++)

@@ -168,7 +168,11 @@ bool cImageList::packMultiAtlas(const char* desiredAtlasName, const char* output
             break;
         }
 
-        packer->buildAtlas();
+        if (packer->buildAtlas() == false)
+        {
+            success = false;
+            break;
+        }
 
         cAtlasSize packedSize = GetAtlasSize(m_config, packedImages);
         const auto spritesArea = packedSize.getArea();
@@ -250,7 +254,10 @@ bool cImageList::packSingleAtlas(const char* desiredAtlasName, const char* outpu
     writeXmlHeader(xmlFile, outputResName);
 
     auto spritesArea = m_size.getArea();
-    packer->buildAtlas();
+    if (packer->buildAtlas() == false)
+    {
+        return false;
+    }
 
     if (saveAtlas(packer.get(), desiredAtlasName, resPathPrefix, xmlFile,
                   atlasSize, spritesArea, startTime)

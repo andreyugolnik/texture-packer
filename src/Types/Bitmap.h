@@ -17,7 +17,7 @@ public:
 
     void clear();
 
-    void createBitmap(const sSize& size);
+    bool createBitmap(const sSize& size);
     void setSize(const sSize& size);
     void setBitmap(const sSize& size, void* data);
 

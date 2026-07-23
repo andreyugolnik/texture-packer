@@ -17,6 +17,7 @@
 #include "Types/Types.h"
 
 #include <algorithm>
+#include <cmath>
 #include <fmt/core.h>
 
 std::unique_ptr<AtlasPacker> AtlasPacker::create(ImageList& imageList, const sConfig& config)
@@ -250,10 +251,10 @@ bool AtlasPacker::generateResFile(cFile& file, const std::string& atlasName)
         sHotspot hotspot{
             m_config.keepFloat
                 ? originalSize.width * 0.5f - offset.x
-                : static_cast<uint32_t>(originalSize.width * 0.5f - offset.x),
+                : std::trunc(originalSize.width * 0.5f - offset.x),
             m_config.keepFloat
                 ? originalSize.height * 0.5f - offset.y
-                : static_cast<uint32_t>(originalSize.height * 0.5f - offset.y)
+                : std::trunc(originalSize.height * 0.5f - offset.y)
         };
 
         // Anchor is the hotspot normalized by sprite size, so size * anchor

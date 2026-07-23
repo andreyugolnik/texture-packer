@@ -39,6 +39,15 @@ bool SimplePacker::add(const cImage* image)
 
     auto& atlasSize = m_atlas.getSize();
     auto& bmpSize = bmp.getSize();
+
+    // Reject oversized sprites; otherwise the unsigned math below
+    // underflows and an out-of-bounds rect gets accepted.
+    if (bmpSize.width + border > atlasSize.width
+        || bmpSize.height + border > atlasSize.height)
+    {
+        return false;
+    }
+
     const auto width = atlasSize.width - bmpSize.width - border;
     const auto height = atlasSize.height - bmpSize.height - border;
 

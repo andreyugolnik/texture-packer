@@ -35,10 +35,10 @@ void cAtlasSize::addRect(const sSize& size)
     m_maxRectSize.width = std::max(m_maxRectSize.width, width);
     m_maxRectSize.height = std::max(m_maxRectSize.height, height);
 
-    m_area += width * height;
+    m_area += static_cast<uint64_t>(width) * height;
 }
 
-uint32_t cAtlasSize::getArea() const
+uint64_t cAtlasSize::getArea() const
 {
     return m_area;
 }
@@ -50,7 +50,7 @@ sSize cAtlasSize::calcSize() const
     auto h = std::max(sq, m_maxRectSize.height) + m_config.border * 2u;
 
     auto width = std::max(w, h);
-    auto height = m_area / width;
+    auto height = static_cast<uint32_t>(m_area / width);
 
     return {
         FixSize(width, m_config.pot),

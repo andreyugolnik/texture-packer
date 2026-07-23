@@ -359,7 +359,7 @@ bool cImageList::optimizeAtlasSize(ImageList& packedImages, const sSize& maxSize
 
 bool cImageList::saveAtlas(AtlasPacker* packer, const char* desiredAtlasName,
                            const char* resPathPrefix, cFile& xmlFile,
-                           const sSize& atlasSize, uint32_t spritesArea, uint64_t startTime)
+                           const sSize& atlasSize, uint64_t spritesArea, uint64_t startTime)
 {
     auto& atlas = packer->getBitmap();
     cImageSaver saver(atlas, desiredAtlasName);

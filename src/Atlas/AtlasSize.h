@@ -20,7 +20,7 @@ public:
     bool isFitToMaxSize(const sSize& size) const;
 
     void addRect(const sSize& size);
-    uint32_t getArea() const;
+    uint64_t getArea() const;
 
     sSize calcSize() const;
     sSize nextSize(const sSize& size, uint32_t step) const;
@@ -35,5 +35,5 @@ private:
 
 private:
     sSize m_maxRectSize;
-    uint32_t m_area = 0u;
+    uint64_t m_area = 0u;
 };

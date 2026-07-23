@@ -50,35 +50,48 @@ int main(int argc, char* argv[])
         }
         else if (isOption(arg, "--atlas="))
         {
-            outputAtlasName = arg + ::strlen("--atlas=");
+            outputAtlasName = arg + litLen("--atlas=");
         }
         else if (isOption(arg, "--xml="))
         {
-            outputResName = arg + ::strlen("--xml=");
+            outputResName = arg + litLen("--xml=");
         }
         else if (isOption(arg, "--prefix="))
         {
-            resPathPrefix = arg + ::strlen("--prefix=");
+            resPathPrefix = arg + litLen("--prefix=");
         }
         else if (isOption(arg, "--border="))
         {
-            auto value = arg + ::strlen("--border=");
-            config.border = static_cast<uint32_t>(::atoi(value));
+            if (parseUint(arg + litLen("--border="), config.border) == false)
+            {
+                cLog::Error("Invalid value for --border.");
+                return -1;
+            }
         }
         else if (isOption(arg, "--padding="))
         {
-            auto value = arg + ::strlen("--padding=");
-            config.padding = static_cast<uint32_t>(::atoi(value));
+            if (parseUint(arg + litLen("--padding="), config.padding) == false)
+            {
+                cLog::Error("Invalid value for --padding.");
+                return -1;
+            }
         }
         else if (isOption(arg, "--atlas-size="))
         {
-            auto value = arg + ::strlen("--atlas-size=");
-            config.maxAtlasSize = static_cast<uint32_t>(::atoi(value));
+            if (parseUint(arg + litLen("--atlas-size="), config.maxAtlasSize) == false
+                || config.maxAtlasSize == 0)
+            {
+                cLog::Error("Invalid value for --atlas-size.");
+                return -1;
+            }
         }
         else if (isOption(arg, "--trim-id="))
         {
-            auto value = arg + ::strlen("--trim-id=");
-            trimCount = static_cast<uint32_t>(::atoi(value));
+            if (parseUint(arg + litLen("--trim-id="), trimCount) == false)
+            {
+                cLog::Error("Invalid value for --trim-id.");
+                return -1;
+            }
         }
         else if (isOption(arg, "--pot"))
         {
@@ -106,7 +119,7 @@ int main(int argc, char* argv[])
         }
         else if (isOption(arg, "--algorithm="))
         {
-            auto value = arg + ::strlen("--algorithm=");
+            auto value = arg + litLen("--algorithm=");
             config.algorithm = sConfig::ToAlgorithm(value);
         }
         else if (isOption(arg, "--overlay"))

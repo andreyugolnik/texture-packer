@@ -8,6 +8,9 @@
 
 #include "Utils.h"
 
+#include <cctype>
+#include <cerrno>
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -67,4 +70,23 @@ bool isOption(const char* arg, const char* name)
         return ::strcmp(arg, name) == 0;
     }
     return ::strncmp(arg, name, ::strlen(name)) == 0;
+}
+
+bool parseUint(const char* value, uint32_t& out)
+{
+    if (value == nullptr || std::isdigit(static_cast<unsigned char>(*value)) == 0)
+    {
+        return false;
+    }
+
+    char* end = nullptr;
+    errno = 0;
+    const auto v = std::strtoul(value, &end, 10);
+    if (*end != '\0' || errno != 0 || v > UINT32_MAX)
+    {
+        return false;
+    }
+
+    out = static_cast<uint32_t>(v);
+    return true;
 }

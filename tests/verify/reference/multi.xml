@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <atlas>
-    <sprites_background texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi.png" rect="1 33 110 90" hotspot="55 45" anchor="0.5 0.5" />
-    <sprites_badge texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi.png" rect="113 33 12 12" hotspot="6 6" anchor="0.5 0.5" />
-    <sprites_banner texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi.png" rect="1 1 120 30" hotspot="60 15" anchor="0.5 0.5" />
-    <sprites_chars_boss texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_1.png" rect="1 19 96 96" hotspot="48 48" anchor="0.5 0.5" />
-    <sprites_icons_coin texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_1.png" rect="99 19 24 24" hotspot="12 12" anchor="0.5 0.5" />
-    <sprites_icons_gem texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_1.png" rect="99 65 20 20" hotspot="10 10" anchor="0.5 0.5" />
-    <sprites_icons_heart texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_1.png" rect="103 1 16 16" hotspot="8 8" anchor="0.5 0.5" />
-    <sprites_icons_shield texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_1.png" rect="99 45 22 18" hotspot="11 9" anchor="0.5 0.5" />
-    <sprites_icons_star texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_1.png" rect="99 87 16 16" hotspot="8 8" anchor="0.5 0.5" />
-    <sprites_marker texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_1.png" rect="99 105 15 9" hotspot="7 4" anchor="0.46666667 0.44444445" />
-    <sprites_ui_slider texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_1.png" rect="1 1 100 16" hotspot="50 8" anchor="0.5 0.5" />
-    <sprites_chars_enemy texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_2.png" rect="83 1 40 40" hotspot="20 20" anchor="0.5 0.5" />
-    <sprites_chars_hero texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_2.png" rect="1 63 48 64" hotspot="24 32" anchor="0.5 0.5" />
-    <sprites_ui_button texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_2.png" rect="51 63 64 32" hotspot="32 16" anchor="0.5 0.5" />
-    <sprites_ui_panel texture="/var/folders/19/_8s860812pv_yb2jbjc2njn00000gn/T/tmp.qhPsg04pvB/multi_2.png" rect="1 1 80 60" hotspot="40 30" anchor="0.5 0.5" />
+    <sprites_background texture="multi.png" rect="1 33 110 90" hotspot="55 45" anchor="0.5 0.5" />
+    <sprites_badge texture="multi.png" rect="113 33 12 12" hotspot="6 6" anchor="0.5 0.5" />
+    <sprites_banner texture="multi.png" rect="1 1 120 30" hotspot="60 15" anchor="0.5 0.5" />
+    <sprites_chars_boss texture="multi_1.png" rect="1 19 96 96" hotspot="48 48" anchor="0.5 0.5" />
+    <sprites_icons_coin texture="multi_1.png" rect="99 19 24 24" hotspot="12 12" anchor="0.5 0.5" />
+    <sprites_icons_gem texture="multi_1.png" rect="99 65 20 20" hotspot="10 10" anchor="0.5 0.5" />
+    <sprites_icons_heart texture="multi_1.png" rect="103 1 16 16" hotspot="8 8" anchor="0.5 0.5" />
+    <sprites_icons_shield texture="multi_1.png" rect="99 45 22 18" hotspot="11 9" anchor="0.5 0.5" />
+    <sprites_icons_star texture="multi_1.png" rect="99 87 16 16" hotspot="8 8" anchor="0.5 0.5" />
+    <sprites_marker texture="multi_1.png" rect="99 105 15 9" hotspot="7 4" anchor="0.46666667 0.44444445" />
+    <sprites_ui_slider texture="multi_1.png" rect="1 1 100 16" hotspot="50 8" anchor="0.5 0.5" />
+    <sprites_chars_enemy texture="multi_2.png" rect="83 1 40 40" hotspot="20 20" anchor="0.5 0.5" />
+    <sprites_chars_hero texture="multi_2.png" rect="1 63 48 64" hotspot="24 32" anchor="0.5 0.5" />
+    <sprites_ui_button texture="multi_2.png" rect="51 63 64 32" hotspot="32 16" anchor="0.5 0.5" />
+    <sprites_ui_panel texture="multi_2.png" rect="1 1 80 60" hotspot="40 30" anchor="0.5 0.5" />
 </atlas>

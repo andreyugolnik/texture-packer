@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atlas>
+    <sprites_background texture="overlay.png" rect="1 33 110 90" hotspot="55 45" anchor="0.5 0.5" />
+    <sprites_badge texture="overlay.png" rect="140 19 12 12" hotspot="6 6" anchor="0.5 0.5" />
+    <sprites_banner texture="overlay.png" rect="1 1 120 30" hotspot="60 15" anchor="0.5 0.5" />
+    <sprites_chars_boss texture="overlay.png" rect="1 125 96 96" hotspot="48 48" anchor="0.5 0.5" />
+    <sprites_chars_enemy texture="overlay.png" rect="163 95 40 40" hotspot="20 20" anchor="0.5 0.5" />
+    <sprites_chars_hero texture="overlay.png" rect="113 95 48 64" hotspot="24 32" anchor="0.5 0.5" />
+    <sprites_icons_coin texture="overlay.png" rect="195 33 24 24" hotspot="12 12" anchor="0.5 0.5" />
+    <sprites_icons_gem texture="overlay.png" rect="205 95 20 20" hotspot="10 10" anchor="0.5 0.5" />
+    <sprites_icons_heart texture="overlay.png" rect="205 117 16 16" hotspot="8 8" anchor="0.5 0.5" />
+    <sprites_icons_shield texture="overlay.png" rect="195 59 22 18" hotspot="11 9" anchor="0.5 0.5" />
+    <sprites_icons_star texture="overlay.png" rect="163 137 16 16" hotspot="8 8" anchor="0.5 0.5" />
+    <sprites_marker texture="overlay.png" rect="123 19 15 9" hotspot="7 4" anchor="0.46666667 0.44444445" />
+    <sprites_ui_button texture="overlay.png" rect="113 161 64 32" hotspot="32 16" anchor="0.5 0.5" />
+    <sprites_ui_panel texture="overlay.png" rect="113 33 80 60" hotspot="40 30" anchor="0.5 0.5" />
+    <sprites_ui_slider texture="overlay.png" rect="123 1 100 16" hotspot="50 8" anchor="0.5 0.5" />
+</atlas>

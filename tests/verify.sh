@@ -57,11 +57,28 @@ run_test() {
         return
     fi
 
+    # Invariant (checked even when updating): every input sprite is packed
+    # exactly once and all sprite ids are unique.
+    local n_input n_packed n_unique
+    n_input=$(find "$SPRITES" -type f -name '*.png' | wc -l | tr -d ' ')
+    n_packed=$(grep -c 'texture=' "$xml" || true)
+    n_unique=$(grep 'texture=' "$xml" | grep -oE '<[^ ]+' | sort -u | wc -l | tr -d ' ')
+    if [ "$n_packed" -ne "$n_input" ]; then
+        echo "  FAIL  $name (packed $n_packed of $n_input sprites)"
+        failed=$((failed + 1))
+        return
+    fi
+    if [ "$n_unique" -ne "$n_packed" ]; then
+        echo "  FAIL  $name (duplicate sprite ids)"
+        failed=$((failed + 1))
+        return
+    fi
+
     if $UPDATE; then
         for f in "$OUTPUT"/$name*.png; do
             [ -f "$f" ] && cp "$f" "$REFERENCE/"
         done
-        cp "$xml" "$REFERENCE/"
+        normalize_xml "$xml" > "$REFERENCE/$name.xml"
         echo "  UPDATED  $name"
         return
     fi
@@ -124,6 +141,70 @@ run_test() {
     passed=$((passed + 1))
 }
 
+# Assert texpacker exits with a specific status (error-path contracts).
+expect_exit() {
+    local name="$1" expected="$2"
+    shift 2
+    total=$((total + 1))
+    local code=0
+    (cd "$VERIFY_DIR" && "$TEXPACKER" "$@") >/dev/null 2>&1 || code=$?
+    if [ "$code" -eq "$expected" ]; then
+        echo "  OK    $name (exit $code)"
+        passed=$((passed + 1))
+    else
+        echo "  FAIL  $name (exit $code, expected $expected)"
+        failed=$((failed + 1))
+    fi
+}
+
+# Smoke-test an output format: the atlas is created, non-empty, right magic.
+check_format() {
+    local name="$1" ext="$2"
+    total=$((total + 1))
+    local atlas="$OUTPUT/$name.$ext"
+    if ! (cd "$VERIFY_DIR" && "$TEXPACKER" sprites --atlas="$atlas") >/dev/null 2>&1 || [ ! -s "$atlas" ]; then
+        echo "  FAIL  $name (no $ext output)"
+        failed=$((failed + 1))
+        return
+    fi
+    if [ "$ext" = "bmp" ] && [ "$(head -c 2 "$atlas")" != "BM" ]; then
+        echo "  FAIL  $name (bad bmp magic)"
+        failed=$((failed + 1))
+        return
+    fi
+    echo "  OK    $name ($ext)"
+    passed=$((passed + 1))
+}
+
+# --trim-sprite shrinks a transparent-bordered sprite to its opaque bounds.
+check_trim() {
+    total=$((total + 1))
+    local u="$OUTPUT/untrim.xml" t="$OUTPUT/trim.xml"
+    (cd "$VERIFY_DIR" && "$TEXPACKER" sprites-trim --atlas="$OUTPUT/u.png" --xml="$u") >/dev/null 2>&1
+    (cd "$VERIFY_DIR" && "$TEXPACKER" sprites-trim --atlas="$OUTPUT/t.png" --xml="$t" --trim-sprite) >/dev/null 2>&1
+    if grep -q 'rect="1 1 20 20"' "$u" && grep -q 'rect="1 1 10 10"' "$t"; then
+        echo "  OK    trimsprite (20x20 -> 10x10)"
+        passed=$((passed + 1))
+    else
+        echo "  FAIL  trimsprite (untrimmed/trimmed rects wrong)"
+        failed=$((failed + 1))
+    fi
+}
+
+# --trim-id strips leading path characters from every sprite id.
+check_trimid() {
+    total=$((total + 1))
+    local x="$OUTPUT/trimid.xml"
+    (cd "$VERIFY_DIR" && "$TEXPACKER" --trim-id=8 sprites --atlas="$OUTPUT/ti.png" --xml="$x") >/dev/null 2>&1
+    if grep -q '<background ' "$x" && ! grep -q 'sprites_' "$x"; then
+        echo "  OK    trimid"
+        passed=$((passed + 1))
+    else
+        echo "  FAIL  trimid (ids not trimmed)"
+        failed=$((failed + 1))
+    fi
+}
+
 if $UPDATE; then
     echo "Updating reference files..."
 else
@@ -135,9 +216,30 @@ echo ""
 run_test single
 run_test anchoronly --anchor-only
 run_test keepfloat  --keep-float
-run_test multi     --multi-atlas --atlas-size=128
-run_test pot       --pot
-run_test bordered  --border=2 --padding=2
+run_test multi      --multi-atlas --atlas-size=128
+run_test pot        --pot
+run_test bordered   --border=2 --padding=2
+run_test overlay    --overlay
+
+if ! $UPDATE; then
+    # Output formats (smoke: created, non-empty, valid magic)
+    check_format tga tga
+    check_format bmp bmp
+
+    # Error-path contracts (exit code; -1 from main becomes 255)
+    mkdir -p "$OUTPUT/emptydir"
+    expect_exit noatlas   255 sprites --xml="$OUTPUT/na.xml"
+    expect_exit emptydir  255 "$OUTPUT/emptydir" --atlas="$OUTPUT/e.png"
+    expect_exit nopath    255 /no/such/path --atlas="$OUTPUT/np.png"
+    expect_exit badnumber 255 sprites --atlas="$OUTPUT/bn.png" --padding=abc
+    expect_exit zerosize  255 sprites --atlas="$OUTPUT/zs.png" --atlas-size=0
+    expect_exit oversized 255 sprites --atlas="$OUTPUT/ov.png" --atlas-size=8
+    expect_exit classicok 0   sprites --atlas="$OUTPUT/cl.png" --algorithm=classic
+
+    # Feature behaviors
+    check_trim
+    check_trimid
+fi
 
 echo ""
 if $UPDATE; then

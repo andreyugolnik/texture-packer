@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Atlas/AtlasSize.h"
+#include "Config.h"
 
 #include <memory>
 #include <string>
@@ -16,7 +17,6 @@
 class AtlasPacker;
 class cFile;
 class cTrim;
-struct sConfig;
 
 class cImageList final
 {
@@ -60,7 +60,8 @@ private:
                    const char* resPathPrefix, cFile& xmlFile,
                    const sSize& atlasSize, uint64_t spritesArea, uint64_t startTime);
 
-    bool findBestSortAndSize(ImageList& images, const sSize& startSize, const sSize& maxSize, sSize& outSize);
+    bool findBestStrategy(ImageList& images, const sSize& startSize, const sSize& maxSize,
+                          sSize& outSize, sConfig::Algorithm& outAlgorithm);
     bool findMinimalAtlasSize(AtlasPacker* packer, ImageList& images, const sSize& startSize, sSize& outSize);
     bool prepareSize(AtlasPacker* packer, const sSize& atlasSize, const ImageList& images);
     bool writeXmlHeader(cFile& xmlFile, const char* outputResName);

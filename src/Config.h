@@ -24,9 +24,10 @@ struct sConfig
     enum class Algorithm
     {
         KDTree,
-        Classic
+        MaxRects,
+        Auto
     };
-    Algorithm algorithm = Algorithm::KDTree;
+    Algorithm algorithm = Algorithm::MaxRects;
     uint32_t maxAtlasSize = 2048u;
 
     void dump() const;

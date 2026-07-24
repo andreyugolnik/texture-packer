@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "Config.h"
 #include "Types/Bitmap.h"
 #include "Types/Types.h"
 
@@ -15,15 +16,13 @@
 
 class cFile;
 class cImage;
-struct sConfig;
 struct sRect;
 struct sSize;
 
 class AtlasPacker
 {
 public:
-    static std::unique_ptr<AtlasPacker> create(ImageList& imageList, const sConfig& config);
-    static std::unique_ptr<AtlasPacker> createPacker(const sConfig& config);
+    static std::unique_ptr<AtlasPacker> createPacker(sConfig::Algorithm algorithm, const sConfig& config);
 
 public:
     AtlasPacker(const sConfig& config);

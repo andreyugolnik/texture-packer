@@ -9,6 +9,7 @@
 #include "ImageList.h"
 #include "Atlas/AtlasPacker.h"
 #include "Atlas/KDTreePacker.h"
+#include "Atlas/MaxRectsPacker.h"
 #include "Config.h"
 #include "File.h"
 #include "Image.h"
@@ -27,12 +28,57 @@
 
 namespace
 {
-    // Try both sort orders and pick the one that produces the smaller atlas
     using Comparator = bool (*)(const cImage*, const cImage*);
-    constexpr Comparator Comparators[] = {
-        KDTreePacker::Compare,
-        KDTreePacker::CompareAlt
+
+    // A packing algorithm paired with a sprite sort order to try. The search
+    // evaluates every strategy of the selected algorithm (all algorithms for
+    // Auto) and keeps whichever yields the smallest atlas.
+    struct sStrategy
+    {
+        sConfig::Algorithm algorithm;
+        Comparator comparator;
     };
+
+    std::vector<sStrategy> getStrategies(sConfig::Algorithm algorithm)
+    {
+        static const sStrategy KDTree[] = {
+            { sConfig::Algorithm::KDTree, KDTreePacker::Compare },
+            { sConfig::Algorithm::KDTree, KDTreePacker::CompareAlt },
+        };
+        static const sStrategy MaxRects[] = {
+            { sConfig::Algorithm::MaxRects, MaxRectsPacker::Compare },
+            { sConfig::Algorithm::MaxRects, MaxRectsPacker::CompareAlt },
+        };
+
+        std::vector<sStrategy> result;
+        if (algorithm == sConfig::Algorithm::KDTree || algorithm == sConfig::Algorithm::Auto)
+        {
+            result.insert(result.end(), std::begin(KDTree), std::end(KDTree));
+        }
+        if (algorithm == sConfig::Algorithm::MaxRects || algorithm == sConfig::Algorithm::Auto)
+        {
+            result.insert(result.end(), std::begin(MaxRects), std::end(MaxRects));
+        }
+
+        return result;
+    }
+
+    // Bounding box area of the packed sprites; approximates the atlas after its
+    // right/bottom transparent margin is trimmed, so it ranks how tightly a
+    // strategy actually packs (the search canvas can be equal for both).
+    uint64_t contentArea(const AtlasPacker* packer)
+    {
+        uint32_t right = 0;
+        uint32_t bottom = 0;
+        for (uint32_t i = 0; i < packer->getRectsCount(); ++i)
+        {
+            auto& rc = packer->getRectByIndex(i);
+            right = std::max(right, rc.right);
+            bottom = std::max(bottom, rc.bottom);
+        }
+
+        return static_cast<uint64_t>(right) * bottom;
+    }
 
     std::string GenerateAtlasName(const char* baseName, uint32_t index)
     {
@@ -226,19 +272,12 @@ bool cImageList::packSingleAtlas(const char* desiredAtlasName, const char* outpu
 
     auto startTime = getCurrentTime();
 
+    auto algorithm = m_config.algorithm;
     bool sized = m_size.isGood(atlasSize);
     if (sized)
     {
-        if (m_config.algorithm == sConfig::Algorithm::KDTree)
-        {
-            const sSize maxSize{ m_config.maxAtlasSize, m_config.maxAtlasSize };
-            sized = findBestSortAndSize(m_images, atlasSize, maxSize, atlasSize);
-        }
-        else
-        {
-            auto packer = AtlasPacker::create(m_images, m_config);
-            sized = findMinimalAtlasSize(packer.get(), m_images, atlasSize, atlasSize);
-        }
+        const sSize maxSize{ m_config.maxAtlasSize, m_config.maxAtlasSize };
+        sized = findBestStrategy(m_images, atlasSize, maxSize, atlasSize, algorithm);
     }
 
     if (sized == false)
@@ -248,7 +287,7 @@ bool cImageList::packSingleAtlas(const char* desiredAtlasName, const char* outpu
         return false;
     }
 
-    auto packer = AtlasPacker::createPacker(m_config);
+    auto packer = AtlasPacker::createPacker(algorithm, m_config);
 
     cLog::Info("Packing atlas:");
     cLog::Info(" - size: {} x {}", atlasSize.width, atlasSize.height);
@@ -286,57 +325,41 @@ bool cImageList::packImagesToMaxSize(ImageList& remainingImages, const sSize& ma
 {
     outPackedImages.clear();
 
-    if (m_config.algorithm == sConfig::Algorithm::KDTree)
+    ImageList bestPacked;
+    Comparator bestComparator = nullptr;
+
+    for (const auto& strategy : getStrategies(m_config.algorithm))
     {
-        ImageList bestPacked;
-        auto bestIdx = std::numeric_limits<size_t>::max();
+        auto sorted = remainingImages;
+        std::stable_sort(sorted.begin(), sorted.end(), strategy.comparator);
 
-        for (size_t i = 0u; i < std::size(Comparators); i++)
-        {
-            auto sorted = remainingImages;
-            std::stable_sort(sorted.begin(), sorted.end(), Comparators[i]);
-
-            auto packer = AtlasPacker::createPacker(m_config);
-            packer->setSize(maxSize);
-
-            ImageList packed;
-            for (auto img : sorted)
-            {
-                if (packer->add(img))
-                {
-                    packed.push_back(img);
-                }
-            }
-
-            if (packed.size() > bestPacked.size())
-            {
-                bestPacked = std::move(packed);
-                bestIdx = i;
-            }
-        }
-
-        if (bestIdx == std::numeric_limits<size_t>::max())
-        {
-            return false;
-        }
-
-        // Apply the winning sort to remainingImages for correct downstream order
-        std::stable_sort(remainingImages.begin(), remainingImages.end(), Comparators[bestIdx]);
-        outPackedImages = std::move(bestPacked);
-    }
-    else
-    {
-        auto packer = AtlasPacker::create(remainingImages, m_config);
+        auto packer = AtlasPacker::createPacker(strategy.algorithm, m_config);
         packer->setSize(maxSize);
 
-        for (auto img : remainingImages)
+        ImageList packed;
+        for (auto img : sorted)
         {
             if (packer->add(img))
             {
-                outPackedImages.push_back(img);
+                packed.push_back(img);
             }
         }
+
+        if (packed.size() > bestPacked.size())
+        {
+            bestPacked = std::move(packed);
+            bestComparator = strategy.comparator;
+        }
     }
+
+    if (bestComparator == nullptr)
+    {
+        return false;
+    }
+
+    // Apply the winning sort to remainingImages for correct downstream order
+    std::stable_sort(remainingImages.begin(), remainingImages.end(), bestComparator);
+    outPackedImages = std::move(bestPacked);
 
     return outPackedImages.empty() == false;
 }
@@ -351,30 +374,13 @@ bool cImageList::optimizeAtlasSize(ImageList& packedImages, const sSize& maxSize
         ? optimalSize
         : maxSize;
 
-    if (m_config.algorithm == sConfig::Algorithm::KDTree)
+    auto algorithm = m_config.algorithm;
+    if (findBestStrategy(packedImages, startSize, maxSize, outFinalSize, algorithm) == false)
     {
-        if (findBestSortAndSize(packedImages, startSize, maxSize, outFinalSize) == false)
-        {
-            return false;
-        }
-
-        packer = AtlasPacker::createPacker(m_config);
+        return false;
     }
-    else
-    {
-        packer = AtlasPacker::create(packedImages, m_config);
 
-        if (findMinimalAtlasSize(packer.get(), packedImages, startSize, outFinalSize) == false)
-        {
-            // Growth may step over maxSize; try maxSize as a fallback
-            outFinalSize = maxSize;
-            if (prepareSize(packer.get(), maxSize, packedImages) == false)
-            {
-                return false;
-            }
-            return true;
-        }
-    }
+    packer = AtlasPacker::createPacker(algorithm, m_config);
 
     return prepareSize(packer.get(), outFinalSize, packedImages);
 }
@@ -422,23 +428,30 @@ bool cImageList::saveAtlas(AtlasPacker* packer, const char* desiredAtlasName,
     return true;
 }
 
-// Try each KDTree comparator, find the minimal atlas size for each,
-// and pick the sort order that produces the smallest atlas area.
-// Falls back to maxSize if the growth loop steps over it.
-bool cImageList::findBestSortAndSize(ImageList& images, const sSize& startSize, const sSize& maxSize, sSize& outSize)
+// Try every strategy (algorithm + sort order) of the configured algorithm
+// (all algorithms for Auto) and keep the one that produces the smallest atlas.
+// The winning algorithm is returned so the caller can build the matching
+// packer; images are left sorted in the winning order.
+bool cImageList::findBestStrategy(ImageList& images, const sSize& startSize, const sSize& maxSize,
+                                  sSize& outSize, sConfig::Algorithm& outAlgorithm)
 {
+    // Copy the start size: the caller may pass the same variable as outSize.
+    const sSize start = startSize;
+
     sSize bestSize{ 0, 0 };
     auto bestArea = std::numeric_limits<uint64_t>::max();
-    auto bestIdx = std::numeric_limits<size_t>::max();
+    auto bestAlgorithm = m_config.algorithm;
+    Comparator bestComparator = nullptr;
+    bool found = false;
 
-    for (size_t i = 0u; i < std::size(Comparators); i++)
+    for (const auto& strategy : getStrategies(m_config.algorithm))
     {
         auto sorted = images;
-        std::stable_sort(sorted.begin(), sorted.end(), Comparators[i]);
+        std::stable_sort(sorted.begin(), sorted.end(), strategy.comparator);
 
-        auto packer = AtlasPacker::createPacker(m_config);
+        auto packer = AtlasPacker::createPacker(strategy.algorithm, m_config);
         sSize foundSize;
-        if (findMinimalAtlasSize(packer.get(), sorted, startSize, foundSize) == false)
+        if (findMinimalAtlasSize(packer.get(), sorted, start, foundSize) == false)
         {
             // Growth may step over maxSize; try maxSize as a fallback
             if (prepareSize(packer.get(), maxSize, sorted) == false)
@@ -448,22 +461,29 @@ bool cImageList::findBestSortAndSize(ImageList& images, const sSize& startSize, 
             foundSize = maxSize;
         }
 
-        auto area = static_cast<uint64_t>(foundSize.width) * foundSize.height;
+        // Rank by the packed content bounds, not the search canvas: two
+        // algorithms often need the same canvas, but the tighter one trims to a
+        // smaller final atlas.
+        prepareSize(packer.get(), foundSize, sorted);
+        const auto area = contentArea(packer.get());
         if (area < bestArea)
         {
             bestArea = area;
             bestSize = foundSize;
-            bestIdx = i;
+            bestAlgorithm = strategy.algorithm;
+            bestComparator = strategy.comparator;
+            found = true;
         }
     }
 
-    if (bestIdx == std::numeric_limits<size_t>::max())
+    if (found == false)
     {
         return false;
     }
 
-    std::stable_sort(images.begin(), images.end(), Comparators[bestIdx]);
+    std::stable_sort(images.begin(), images.end(), bestComparator);
     outSize = bestSize;
+    outAlgorithm = bestAlgorithm;
     return true;
 }
 

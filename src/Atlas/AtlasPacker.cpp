@@ -12,7 +12,7 @@
 #include "Image.h"
 #include "KDTreePacker.h"
 #include "Log.h"
-#include "SimplePacker.h"
+#include "MaxRectsPacker.h"
 #include "Trim.h"
 #include "Types/Types.h"
 
@@ -51,33 +51,11 @@ namespace
     }
 } // namespace
 
-std::unique_ptr<AtlasPacker> AtlasPacker::create(ImageList& imageList, const sConfig& config)
+std::unique_ptr<AtlasPacker> AtlasPacker::createPacker(sConfig::Algorithm algorithm, const sConfig& config)
 {
-    if (config.algorithm == sConfig::Algorithm::Classic)
+    if (algorithm == sConfig::Algorithm::MaxRects)
     {
-        std::stable_sort(imageList.begin(), imageList.end(), SimplePacker::Compare);
-
-        return std::make_unique<SimplePacker>(config);
-    }
-    else if (config.algorithm != sConfig::Algorithm::KDTree)
-    {
-        cLog::Error("Unknown algorithm, fallback to KD-Tree.");
-    }
-
-    std::stable_sort(imageList.begin(), imageList.end(), KDTreePacker::Compare);
-
-    return std::make_unique<KDTreePacker>(config);
-}
-
-std::unique_ptr<AtlasPacker> AtlasPacker::createPacker(const sConfig& config)
-{
-    if (config.algorithm == sConfig::Algorithm::Classic)
-    {
-        return std::make_unique<SimplePacker>(config);
-    }
-    else if (config.algorithm != sConfig::Algorithm::KDTree)
-    {
-        cLog::Error("Unknown algorithm, fallback to KD-Tree.");
+        return std::make_unique<MaxRectsPacker>(config);
     }
 
     return std::make_unique<KDTreePacker>(config);

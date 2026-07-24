@@ -120,11 +120,6 @@ int main(int argc, char* argv[])
         else if (isOption(arg, "--algorithm="))
         {
             config.algorithm = sConfig::ToAlgorithm(arg + litLen("--algorithm="));
-            if (config.algorithm == sConfig::Algorithm::Classic)
-            {
-                cLog::Warning("The classic algorithm is temporarily disabled; using kdtree.");
-                config.algorithm = sConfig::Algorithm::KDTree;
-            }
         }
         else if (isOption(arg, "--overlay"))
         {
@@ -226,7 +221,7 @@ void showHelp(const char* name, const sConfig& config)
     cLog::Info("  {} INPUT_IMAGE [INPUT_IMAGE] <OPTIONS> --atlas=PATH", name);
     cLog::Info("");
     cLog::Info("  INPUT_IMAGE        Input image file or directory (space-separated)");
-    cLog::Info("  --algorithm=NAME   Packing algorithm (default: kdtree)");
+    cLog::Info("  --algorithm=NAME   Packing algorithm: kdtree, maxrects, auto (default: {})", sConfig::ToName(config.algorithm));
     cLog::Info("  --allow-dupes      Allow duplicate sprites (default: {})", toString(config.allowDupes));
     cLog::Info("  --anchor-only      Omit hotspot, keep anchor only (default: {})", toString(config.anchorOnly));
     cLog::Info("  --atlas-size=SIZE  Maximum atlas size (default: {} px)", config.maxAtlasSize);

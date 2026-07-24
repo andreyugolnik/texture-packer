@@ -29,7 +29,7 @@ straight into your build scripts and CI pipelines.
 
 ### Packing
 
-- **KD-Tree** rectangle packing, tuned for mixed sprite sizes.
+- Two packing algorithms: **MaxRects** (default, densest) and **KD-Tree**; `--algorithm=auto` packs with both and keeps the smaller atlas.
 - **Multi-atlas** output when the sprite set exceeds the maximum atlas size.
 - Optional **power-of-two** atlas dimensions for older GPUs.
 - Configurable **border** and **padding** to prevent texture bleeding.
@@ -63,7 +63,7 @@ texpacker sprites --atlas=game.png --xml=game.xml --trim-sprite --padding=2
 ```sh
 texpacker INPUT_IMAGE [INPUT_IMAGE] <OPTIONS> --atlas=PATH
   INPUT_IMAGE        Input image file or directory (space-separated)
-  --algorithm=NAME   Packing algorithm (default: kdtree)
+  --algorithm=NAME   Packing algorithm: kdtree, maxrects, auto (default: maxrects)
   --allow-dupes      Allow duplicate sprites (default: false)
   --anchor-only      Omit hotspot, keep anchor only (default: false)
   --atlas-size=SIZE  Maximum atlas size (default: 2048 px)

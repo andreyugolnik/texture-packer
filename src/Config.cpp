@@ -19,7 +19,8 @@ namespace
         sConfig::Algorithm algorithm;
     } Algos[] = {
         { "kdtree", "KD-Tree", sConfig::Algorithm::KDTree },
-        { "classic", "Classic", sConfig::Algorithm::Classic },
+        { "maxrects", "MaxRects", sConfig::Algorithm::MaxRects },
+        { "auto", "Auto", sConfig::Algorithm::Auto },
     };
 
 } // namespace

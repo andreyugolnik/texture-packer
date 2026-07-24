@@ -8,8 +8,7 @@
 
 #include "ImageList.h"
 #include "Atlas/AtlasPacker.h"
-#include "Atlas/KDTreePacker.h"
-#include "Atlas/MaxRectsPacker.h"
+#include "Atlas/SortOrder.h"
 #include "Config.h"
 #include "File.h"
 #include "Image.h"
@@ -41,23 +40,28 @@ namespace
 
     std::vector<sStrategy> getStrategies(sConfig::Algorithm algorithm)
     {
-        static const sStrategy KDTree[] = {
-            { sConfig::Algorithm::KDTree, KDTreePacker::Compare },
-            { sConfig::Algorithm::KDTree, KDTreePacker::CompareAlt },
-        };
-        static const sStrategy MaxRects[] = {
-            { sConfig::Algorithm::MaxRects, MaxRectsPacker::Compare },
-            { sConfig::Algorithm::MaxRects, MaxRectsPacker::CompareAlt },
+        static const Comparator orders[] = {
+            SortOrder::byLongestSide,
+            SortOrder::byLongestSideThenArea,
         };
 
-        std::vector<sStrategy> result;
+        std::vector<sConfig::Algorithm> algorithms;
         if (algorithm == sConfig::Algorithm::KDTree || algorithm == sConfig::Algorithm::Auto)
         {
-            result.insert(result.end(), std::begin(KDTree), std::end(KDTree));
+            algorithms.push_back(sConfig::Algorithm::KDTree);
         }
         if (algorithm == sConfig::Algorithm::MaxRects || algorithm == sConfig::Algorithm::Auto)
         {
-            result.insert(result.end(), std::begin(MaxRects), std::end(MaxRects));
+            algorithms.push_back(sConfig::Algorithm::MaxRects);
+        }
+
+        std::vector<sStrategy> result;
+        for (auto algo : algorithms)
+        {
+            for (auto order : orders)
+            {
+                result.push_back({ algo, order });
+            }
         }
 
         return result;

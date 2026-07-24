@@ -34,38 +34,6 @@ MaxRectsPacker::~MaxRectsPacker()
 {
 }
 
-// Both orders sort by the longest side descending (empirically the densest
-// for MaxRects); the search tries both and keeps the smaller atlas.
-bool MaxRectsPacker::Compare(const cImage* a, const cImage* b)
-{
-    auto& sizea = a->getBitmap().getSize();
-    auto& sizeb = b->getBitmap().getSize();
-
-    return std::max(sizea.width, sizea.height) > std::max(sizeb.width, sizeb.height);
-}
-
-bool MaxRectsPacker::CompareAlt(const cImage* a, const cImage* b)
-{
-    auto& sizea = a->getBitmap().getSize();
-    auto& sizeb = b->getBitmap().getSize();
-
-    const auto maxa = std::max(sizea.width, sizea.height);
-    const auto maxb = std::max(sizeb.width, sizeb.height);
-    if (maxa != maxb)
-    {
-        return maxa > maxb;
-    }
-
-    const auto areaa = static_cast<uint64_t>(sizea.width) * sizea.height;
-    const auto areab = static_cast<uint64_t>(sizeb.width) * sizeb.height;
-    if (areaa != areab)
-    {
-        return areaa > areab;
-    }
-
-    return sizea.height > sizeb.height;
-}
-
 void MaxRectsPacker::setSize(const sSize& size)
 {
     const auto border = m_config.border;

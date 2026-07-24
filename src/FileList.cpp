@@ -10,18 +10,47 @@
 #include "Log.h"
 
 #include <algorithm>
-#include <dirent.h>
-#include <sys/stat.h>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 namespace
 {
-    int DirectoryFilter(const dirent* p)
+    void collect(const std::string& root, bool recurse, std::vector<std::string>& out)
     {
-        // skip . and ..
-#define DOT_OR_DOTDOT(base) (base[0] == '.' && (base[1] == '\0' || (base[1] == '.' && base[2] == '\0')))
-        return DOT_OR_DOTDOT(p->d_name)
-            ? 0
-            : 1;
+        const auto options = fs::directory_options::skip_permission_denied;
+
+        std::error_code ec;
+        if (recurse)
+        {
+            auto it = fs::recursive_directory_iterator(root, options, ec);
+            for (const auto end = fs::recursive_directory_iterator(); it != end; it.increment(ec))
+            {
+                if (ec)
+                {
+                    break;
+                }
+                if (it->is_regular_file(ec))
+                {
+                    out.push_back(it->path().string());
+                }
+            }
+        }
+        else
+        {
+            auto it = fs::directory_iterator(root, options, ec);
+            for (const auto end = fs::directory_iterator(); it != end; it.increment(ec))
+            {
+                if (ec)
+                {
+                    break;
+                }
+                if (it->is_regular_file(ec))
+                {
+                    out.push_back(it->path().string());
+                }
+            }
+        }
     }
 
 } // namespace
@@ -33,53 +62,28 @@ void cFileList::addFile(uint32_t trimCount, const std::string& path)
 
 void cFileList::addPath(uint32_t trimCount, const std::string& root, bool recurse)
 {
-    auto dir = ::opendir(root.c_str());
-    if (dir != nullptr)
+    std::error_code ec;
+    const auto status = fs::status(root, ec);
+    if (ec || fs::exists(status) == false)
     {
-        dirent** namelist;
-        int n = ::scandir(root.c_str(), &namelist, DirectoryFilter, alphasort);
-        if (n >= 0)
-        {
-            while (n--)
-            {
-                std::string path(root);
-                if (path[path.length() - 1] != '/')
-                {
-                    path += "/";
-                }
-                path += namelist[n]->d_name;
-
-                if (recurse)
-                {
-                    addPath(trimCount, path, recurse);
-                }
-                else
-                {
-                    addFile(trimCount, path);
-                }
-
-                ::free(namelist[n]);
-            }
-            ::free(namelist);
-        }
-
-        ::closedir(dir);
+        cLog::Warning("Input path '{}' does not exist.", root);
+        return;
     }
-    else
+
+    if (fs::is_directory(status) == false)
     {
-        struct stat st;
-        if (::stat(root.c_str(), &st) != 0)
-        {
-            cLog::Warning("Input path '{}' does not exist.", root);
-        }
-        else if (S_ISDIR(st.st_mode))
-        {
-            cLog::Warning("Cannot open directory '{}'.", root);
-        }
-        else
-        {
-            addFile(trimCount, root);
-        }
+        addFile(trimCount, root);
+        return;
+    }
+
+    std::vector<std::string> entries;
+    collect(root, recurse, entries);
+
+    // Sort for deterministic output regardless of filesystem iteration order.
+    std::sort(entries.begin(), entries.end());
+    for (const auto& path : entries)
+    {
+        addFile(trimCount, path);
     }
 }
 

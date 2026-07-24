@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <atlas>
     <sprites_background texture="keepfloat.png" rect="1 33 110 90" hotspot="55 45" anchor="0.5 0.5" />
-    <sprites_badge texture="keepfloat.png" rect="140 19 12 12" hotspot="6 6" anchor="0.5 0.5" />
+    <sprites_badge texture="keepfloat.png" rect="197 185 12 12" hotspot="6 6" anchor="0.5 0.5" />
     <sprites_banner texture="keepfloat.png" rect="1 1 120 30" hotspot="60 15" anchor="0.5 0.5" />
-    <sprites_chars_boss texture="keepfloat.png" rect="1 125 96 96" hotspot="48 48" anchor="0.5 0.5" />
-    <sprites_chars_enemy texture="keepfloat.png" rect="163 95 40 40" hotspot="20 20" anchor="0.5 0.5" />
-    <sprites_chars_hero texture="keepfloat.png" rect="113 95 48 64" hotspot="24 32" anchor="0.5 0.5" />
-    <sprites_icons_coin texture="keepfloat.png" rect="195 33 24 24" hotspot="12 12" anchor="0.5 0.5" />
-    <sprites_icons_gem texture="keepfloat.png" rect="205 95 20 20" hotspot="10 10" anchor="0.5 0.5" />
-    <sprites_icons_heart texture="keepfloat.png" rect="205 117 16 16" hotspot="8 8" anchor="0.5 0.5" />
-    <sprites_icons_shield texture="keepfloat.png" rect="195 59 22 18" hotspot="11 9" anchor="0.5 0.5" />
-    <sprites_icons_star texture="keepfloat.png" rect="163 137 16 16" hotspot="8 8" anchor="0.5 0.5" />
-    <sprites_marker texture="keepfloat.png" rect="123 19 15 9" hotspot="7.5 4.5" anchor="0.5 0.5" />
-    <sprites_ui_button texture="keepfloat.png" rect="113 161 64 32" hotspot="32 16" anchor="0.5 0.5" />
-    <sprites_ui_panel texture="keepfloat.png" rect="113 33 80 60" hotspot="40 30" anchor="0.5 0.5" />
-    <sprites_ui_slider texture="keepfloat.png" rect="123 1 100 16" hotspot="50 8" anchor="0.5 0.5" />
+    <sprites_chars_boss texture="keepfloat.png" rect="113 33 96 96" hotspot="48 48" anchor="0.5 0.5" />
+    <sprites_chars_enemy texture="keepfloat.png" rect="133 165 40 40" hotspot="20 20" anchor="0.5 0.5" />
+    <sprites_chars_hero texture="keepfloat.png" rect="83 143 48 64" hotspot="24 32" anchor="0.5 0.5" />
+    <sprites_icons_coin texture="keepfloat.png" rect="123 1 24 24" hotspot="12 12" anchor="0.5 0.5" />
+    <sprites_icons_gem texture="keepfloat.png" rect="175 185 20 20" hotspot="10 10" anchor="0.5 0.5" />
+    <sprites_icons_heart texture="keepfloat.png" rect="149 1 16 16" hotspot="8 8" anchor="0.5 0.5" />
+    <sprites_icons_shield texture="keepfloat.png" rect="175 165 22 18" hotspot="11 9" anchor="0.5 0.5" />
+    <sprites_icons_star texture="keepfloat.png" rect="167 1 16 16" hotspot="8 8" anchor="0.5 0.5" />
+    <sprites_marker texture="keepfloat.png" rect="103 131 15 9" hotspot="7.5 4.5" anchor="0.5 0.5" />
+    <sprites_ui_button texture="keepfloat.png" rect="133 131 64 32" hotspot="32 16" anchor="0.5 0.5" />
+    <sprites_ui_panel texture="keepfloat.png" rect="1 143 80 60" hotspot="40 30" anchor="0.5 0.5" />
+    <sprites_ui_slider texture="keepfloat.png" rect="1 125 100 16" hotspot="50 8" anchor="0.5 0.5" />
 </atlas>

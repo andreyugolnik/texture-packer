@@ -220,6 +220,7 @@ run_test multi      --multi-atlas --atlas-size=128
 run_test pot        --pot
 run_test bordered   --border=2 --padding=2
 run_test overlay    --overlay
+run_test kdtree     --algorithm=kdtree
 
 if ! $UPDATE; then
     # Output formats (smoke: created, non-empty, valid magic)
@@ -234,7 +235,7 @@ if ! $UPDATE; then
     expect_exit badnumber 255 sprites --atlas="$OUTPUT/bn.png" --padding=abc
     expect_exit zerosize  255 sprites --atlas="$OUTPUT/zs.png" --atlas-size=0
     expect_exit oversized 255 sprites --atlas="$OUTPUT/ov.png" --atlas-size=8
-    expect_exit classicok 0   sprites --atlas="$OUTPUT/cl.png" --algorithm=classic
+    expect_exit autoalg   0   sprites --atlas="$OUTPUT/au.png" --algorithm=auto
 
     # Feature behaviors
     check_trim

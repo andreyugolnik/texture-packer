@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <atlas>
     <sprites_background texture="anchoronly.png" rect="1 33 110 90" anchor="0.5 0.5" />
-    <sprites_badge texture="anchoronly.png" rect="140 19 12 12" anchor="0.5 0.5" />
+    <sprites_badge texture="anchoronly.png" rect="197 185 12 12" anchor="0.5 0.5" />
     <sprites_banner texture="anchoronly.png" rect="1 1 120 30" anchor="0.5 0.5" />
-    <sprites_chars_boss texture="anchoronly.png" rect="1 125 96 96" anchor="0.5 0.5" />
-    <sprites_chars_enemy texture="anchoronly.png" rect="163 95 40 40" anchor="0.5 0.5" />
-    <sprites_chars_hero texture="anchoronly.png" rect="113 95 48 64" anchor="0.5 0.5" />
-    <sprites_icons_coin texture="anchoronly.png" rect="195 33 24 24" anchor="0.5 0.5" />
-    <sprites_icons_gem texture="anchoronly.png" rect="205 95 20 20" anchor="0.5 0.5" />
-    <sprites_icons_heart texture="anchoronly.png" rect="205 117 16 16" anchor="0.5 0.5" />
-    <sprites_icons_shield texture="anchoronly.png" rect="195 59 22 18" anchor="0.5 0.5" />
-    <sprites_icons_star texture="anchoronly.png" rect="163 137 16 16" anchor="0.5 0.5" />
-    <sprites_marker texture="anchoronly.png" rect="123 19 15 9" anchor="0.46666667 0.44444445" />
-    <sprites_ui_button texture="anchoronly.png" rect="113 161 64 32" anchor="0.5 0.5" />
-    <sprites_ui_panel texture="anchoronly.png" rect="113 33 80 60" anchor="0.5 0.5" />
-    <sprites_ui_slider texture="anchoronly.png" rect="123 1 100 16" anchor="0.5 0.5" />
+    <sprites_chars_boss texture="anchoronly.png" rect="113 33 96 96" anchor="0.5 0.5" />
+    <sprites_chars_enemy texture="anchoronly.png" rect="133 165 40 40" anchor="0.5 0.5" />
+    <sprites_chars_hero texture="anchoronly.png" rect="83 143 48 64" anchor="0.5 0.5" />
+    <sprites_icons_coin texture="anchoronly.png" rect="123 1 24 24" anchor="0.5 0.5" />
+    <sprites_icons_gem texture="anchoronly.png" rect="175 185 20 20" anchor="0.5 0.5" />
+    <sprites_icons_heart texture="anchoronly.png" rect="149 1 16 16" anchor="0.5 0.5" />
+    <sprites_icons_shield texture="anchoronly.png" rect="175 165 22 18" anchor="0.5 0.5" />
+    <sprites_icons_star texture="anchoronly.png" rect="167 1 16 16" anchor="0.5 0.5" />
+    <sprites_marker texture="anchoronly.png" rect="103 131 15 9" anchor="0.46666667 0.44444445" />
+    <sprites_ui_button texture="anchoronly.png" rect="133 131 64 32" anchor="0.5 0.5" />
+    <sprites_ui_panel texture="anchoronly.png" rect="1 143 80 60" anchor="0.5 0.5" />
+    <sprites_ui_slider texture="anchoronly.png" rect="1 125 100 16" anchor="0.5 0.5" />
 </atlas>

@@ -21,7 +21,7 @@ release:
 	cp $(BUILD_DIR_DEBUG)/texpacker .
 
 check:
-	cppcheck -j $(NPROC) --enable=all -f -I src src/ 2> cppcheck-output
+	cppcheck -j $(NPROC) --std=c++17 --check-level=exhaustive --enable=all -f -I src src/ 2> cppcheck-output
 
 build_compile_commands:
 	@mkdir -p $(COMPILE_COMMANDS_DIR)

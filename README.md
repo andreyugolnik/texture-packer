@@ -106,9 +106,10 @@ Run the verification suite to check atlas output against committed reference fil
 ./tests/verify.sh
 ```
 
-It runs `texpacker` with several configurations (single atlas, multi-atlas,
-power-of-two, border/padding, anchor-only, keep-float) and compares the resulting
-atlas images and XML metadata byte-for-byte against reference output.
+It compares atlas images and XML byte-for-byte against reference output across
+many configurations (single and multi-atlas, power-of-two, border/padding,
+anchor-only, keep-float, overlay), and additionally checks error-path exit codes,
+TGA/BMP output, and sprite-trimming behavior.
 
 To regenerate reference files after an intentional change in packing behavior:
 

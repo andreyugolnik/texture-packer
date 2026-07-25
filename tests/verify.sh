@@ -287,6 +287,20 @@ check_reported_size() {
     fi
 }
 
+# A fully transparent atlas (all source sprites empty) warns but still succeeds.
+check_transparent_warn() {
+    total=$((total + 1))
+    local out atlas="$OUTPUT/tw.png"
+    out=$( (cd "$VERIFY_DIR" && "$TEXPACKER" sprites-empty --atlas="$atlas") 2>&1 || true )
+    if echo "$out" | grep -qi 'transparent' && [ -s "$atlas" ]; then
+        echo "  OK    transparentwarn"
+        passed=$((passed + 1))
+    else
+        echo "  FAIL  transparentwarn (missing warning or output)"
+        failed=$((failed + 1))
+    fi
+}
+
 if $UPDATE; then
     echo "Updating reference files..."
 else
@@ -331,6 +345,7 @@ if ! $UPDATE; then
     # Regression: XML escaping and accurate reported atlas size
     check_xml_escape
     check_reported_size
+    check_transparent_warn
 fi
 
 echo ""

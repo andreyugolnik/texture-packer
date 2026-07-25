@@ -411,6 +411,11 @@ bool cImageList::saveAtlas(AtlasPacker* packer, const char* desiredAtlasName,
 
     const auto outputAtlasName = saver.getAtlasName();
 
+    if (atlas.isFullyTransparent())
+    {
+        cLog::Warning("Atlas '{}' is fully transparent (source sprites have no opaque pixels).", outputAtlasName);
+    }
+
     // Write XML entry
     if (xmlFile.isOpened())
     {

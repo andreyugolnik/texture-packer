@@ -65,6 +65,20 @@ void cBitmap::setBitmap(const sSize& size, void* data)
     m_data = static_cast<Pixel*>(data);
 }
 
+bool cBitmap::isFullyTransparent() const
+{
+    const auto count = static_cast<size_t>(m_size.width) * m_size.height;
+    for (size_t i = 0; i < count; ++i)
+    {
+        if (m_data[i].a != 0)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 cBitmap::cBitmap(cBitmap&& other) noexcept
 {
     moveAndSet(m_size, other.m_size, {});

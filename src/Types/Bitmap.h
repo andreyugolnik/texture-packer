@@ -38,6 +38,8 @@ public:
         return m_size.width;
     }
 
+    bool isFullyTransparent() const;
+
     struct Pixel
     {
         uint8_t r;

@@ -291,9 +291,6 @@ bool cImageList::packSingleAtlas(const char* desiredAtlasName, const char* outpu
 
     auto packer = AtlasPacker::createPacker(algorithm, m_config);
 
-    cLog::Info("Packing atlas:");
-    cLog::Info(" - size: {} x {}", atlasSize.width, atlasSize.height);
-
     if (prepareSize(packer.get(), atlasSize, m_images) == false)
     {
         cLog::Error("Cannot pack images into atlas {} x {}.", atlasSize.width, atlasSize.height);
@@ -433,11 +430,17 @@ bool cImageList::saveAtlas(AtlasPacker* packer, const char* desiredAtlasName,
         ? static_cast<uint32_t>(100.0 * spritesArea / atlasArea)
         : 0u;
 
-    cLog::Info("Atlas '{}' ({} x {}, fill: {}%) was created in {:.2f} ms.",
-               outputAtlasName,
-               atlasSize.width, atlasSize.height,
-               percent,
-               (getCurrentTime() - startTime) * 0.001f);
+    std::string name = outputAtlasName;
+    if (name.length() < m_config.nameWidth)
+    {
+        name.resize(m_config.nameWidth, ' ');
+    }
+
+    const auto size = fmt::format("{}x{}", atlasSize.width, atlasSize.height);
+    cLog::Info("{}  {:>9}  {:>3} sprites  {:>3}%  {:>6.1f} ms",
+               name, size,
+               packer->getRectsCount(), percent,
+               static_cast<float>((getCurrentTime() - startTime) * 0.001));
 
     return true;
 }
@@ -603,7 +606,7 @@ bool cImageList::writeXmlFooter(cFile& xmlFile, const char* outputResName)
 
     if (outputResName != nullptr)
     {
-        cLog::Info("Atlas description '{}' was created.", outputResName);
+        cLog::Info("{}: {} sprites", outputResName, static_cast<uint32_t>(m_images.size()));
     }
 
     return true;

@@ -21,6 +21,7 @@ struct sConfig
     bool anchorOnly = false;
     bool overlay = false;
     bool allowDupes = false;
+    bool verbose = false;
     enum class Algorithm
     {
         KDTree,
@@ -29,6 +30,7 @@ struct sConfig
     };
     Algorithm algorithm = Algorithm::MaxRects;
     uint32_t maxAtlasSize = 2048u;
+    uint32_t nameWidth = 0;
 
     void dump() const;
 

@@ -17,14 +17,12 @@
 #include <string>
 
 void showHelp(const char* name, const sConfig& config);
+void showBanner();
 
 int main(int argc, char* argv[])
 {
     sConfig config;
 
-    cLog::Info("Texture Packer v1.5.1");
-    cLog::Info("Copyright (c) 2017-2026 Andrey A. Ugolnik.");
-    cLog::Info("");
     if (argc < 3)
     {
         showHelp(argv[0], config);
@@ -85,6 +83,14 @@ int main(int argc, char* argv[])
                 return -1;
             }
         }
+        else if (isOption(arg, "--name-width="))
+        {
+            if (parseUint(arg + litLen("--name-width="), config.nameWidth) == false)
+            {
+                cLog::Error("Invalid value for --name-width.");
+                return -1;
+            }
+        }
         else if (isOption(arg, "--trim-id="))
         {
             if (parseUint(arg + litLen("--trim-id="), trimCount) == false)
@@ -129,6 +135,15 @@ int main(int argc, char* argv[])
         {
             recurse = false;
         }
+        else if (isOption(arg, "--verbose") || isOption(arg, "-v"))
+        {
+            config.verbose = true;
+        }
+        else if (isOption(arg, "--help") || isOption(arg, "-h"))
+        {
+            showHelp(argv[0], config);
+            return 0;
+        }
         else
         {
             cLog::Warning("Unknown option: '{}'.", arg);
@@ -141,12 +156,17 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    config.dump();
-    if (resPathPrefix != nullptr)
+    if (config.verbose)
     {
-        cLog::Info("Path prefix:        {}.", resPathPrefix);
+        showBanner();
+        cLog::Info("");
+        config.dump();
+        if (resPathPrefix != nullptr)
+        {
+            cLog::Info("Path prefix:        {}.", resPathPrefix);
+        }
+        cLog::Info("");
     }
-    cLog::Info("");
 
     auto startTime = getCurrentTime();
 
@@ -190,10 +210,13 @@ int main(int argc, char* argv[])
 
     auto& images = imageList.getList();
 
-    cLog::Info("Loaded {} ({}) images in {:.2f} ms.",
-               static_cast<uint32_t>(images.size()),
-               static_cast<uint32_t>(files.size()),
-               (getCurrentTime() - startTime) * 0.001f);
+    if (config.verbose)
+    {
+        cLog::Info("Loaded {} ({}) images in {:.2f} ms.",
+                   static_cast<uint32_t>(images.size()),
+                   static_cast<uint32_t>(files.size()),
+                   (getCurrentTime() - startTime) * 0.001f);
+    }
 
     if (images.empty())
     {
@@ -211,8 +234,16 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+void showBanner()
+{
+    cLog::Info("Texture Packer v1.5.1");
+    cLog::Info("Copyright (c) 2017-2026 Andrey A. Ugolnik.");
+}
+
 void showHelp(const char* name, const sConfig& config)
 {
+    showBanner();
+    cLog::Info("");
     cLog::Info("Usage:");
     auto p = ::strrchr(name, '/');
     name = p != nullptr
@@ -227,8 +258,10 @@ void showHelp(const char* name, const sConfig& config)
     cLog::Info("  --atlas-size=SIZE  Maximum atlas size (default: {} px)", config.maxAtlasSize);
     cLog::Info("  --atlas=PATH       Output atlas file name (default: PNG)");
     cLog::Info("  --border=SIZE      Add border around sprites (default: {} px)", config.border);
+    cLog::Info("  --help, -h         Show this help");
     cLog::Info("  --keep-float       Preserve float hotspot coordinates (default: {})", toString(config.keepFloat));
     cLog::Info("  --multi-atlas      Enable multi-atlas output (default: {})", toString(config.enableMultiAtlas));
+    cLog::Info("  --name-width=N     Pad the atlas name column to N chars (0 = no padding)");
     cLog::Info("  --no-recurse       Do not search subdirectories");
     cLog::Info("  --overlay          Overlay sprites (default: {})", toString(config.overlay));
     cLog::Info("  --padding=SIZE     Add padding between sprites (default: {} px)", config.padding);
@@ -236,5 +269,6 @@ void showHelp(const char* name, const sConfig& config)
     cLog::Info("  --prefix=PREFIX    Add prefix to texture path");
     cLog::Info("  --trim-id=COUNT    Remove COUNT characters from the start of sprite IDs (default: 0)");
     cLog::Info("  --trim-sprite      Trim transparent borders from sprites (default: {})", toString(config.trimSprite));
+    cLog::Info("  --verbose, -v      Verbose output (banner, config, timings)");
     cLog::Info("  --xml=PATH         The output file path for the atlas description in XML format");
 }

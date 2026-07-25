@@ -273,8 +273,8 @@ check_reported_size() {
     total=$((total + 1))
     local atlas="$OUTPUT/rep.png" out rep
     out=$( (cd "$VERIFY_DIR" && "$TEXPACKER" sprites --border=64 --atlas="$atlas") 2>/dev/null || true )
-    rep=$(echo "$out" | grep -oE '\([0-9]+ x [0-9]+,' | grep -oE '[0-9]+ x [0-9]+' | head -1 || true)
-    local rep_w="${rep% x *}" rep_h="${rep#* x }"
+    rep=$(echo "$out" | grep -oE '[0-9]+x[0-9]+' | head -1 || true)
+    local rep_w="${rep%x*}" rep_h="${rep#*x}"
     local real_w real_h
     real_w=$(png_dim "$atlas" 16)
     real_h=$(png_dim "$atlas" 20)
@@ -297,6 +297,24 @@ check_transparent_warn() {
         passed=$((passed + 1))
     else
         echo "  FAIL  transparentwarn (missing warning or output)"
+        failed=$((failed + 1))
+    fi
+}
+
+# Packing output is quiet by default (no banner); --verbose restores it.
+check_verbose() {
+    total=$((total + 1))
+    local quiet verbose
+    quiet=$( (cd "$VERIFY_DIR" && "$TEXPACKER" sprites --atlas="$OUTPUT/vq.png") 2>&1 || true )
+    verbose=$( (cd "$VERIFY_DIR" && "$TEXPACKER" sprites --atlas="$OUTPUT/vv.png" --verbose) 2>&1 || true )
+    if echo "$quiet" | grep -q "Texture Packer"; then
+        echo "  FAIL  verbose (banner shown by default)"
+        failed=$((failed + 1))
+    elif echo "$verbose" | grep -q "Texture Packer"; then
+        echo "  OK    verbose (banner only with --verbose)"
+        passed=$((passed + 1))
+    else
+        echo "  FAIL  verbose (--verbose did not show the banner)"
         failed=$((failed + 1))
     fi
 }
@@ -346,6 +364,7 @@ if ! $UPDATE; then
     check_xml_escape
     check_reported_size
     check_transparent_warn
+    check_verbose
 fi
 
 echo ""

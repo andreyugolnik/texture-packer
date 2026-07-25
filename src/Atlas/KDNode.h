@@ -10,6 +10,8 @@
 
 #include "Types/Types.h"
 
+#include <memory>
+
 class cKDNode final
 {
 public:
@@ -32,14 +34,16 @@ private:
         return m_childA == nullptr && m_childB == nullptr;
     }
 
+    cKDNode* placeInLeaf(const sSize& size);
+
 private:
     const sRect m_area;
     const uint32_t m_padding;
 
 private:
     bool m_used = false;
-    cKDNode* m_childA = nullptr; // left or top
-    cKDNode* m_childB = nullptr; // right or bottom
+    std::unique_ptr<cKDNode> m_childA; // left or top
+    std::unique_ptr<cKDNode> m_childB; // right or bottom
 
     sRect m_rect{ 0u, 0u, 0u, 0u };
 };

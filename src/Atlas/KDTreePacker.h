@@ -10,6 +10,7 @@
 
 #include "AtlasPacker.h"
 
+#include <memory>
 #include <vector>
 
 class cKDNode;
@@ -43,7 +44,7 @@ public:
     const sRect& getRectByIndex(uint32_t idx) const override;
 
 private:
-    cKDNode* m_root = nullptr;
+    std::unique_ptr<cKDNode> m_root;
 
     struct Piece
     {

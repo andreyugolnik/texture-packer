@@ -49,6 +49,36 @@ namespace
 
         return true;
     }
+
+    // Escape a string for use as an XML attribute value (texture path).
+    std::string escapeXmlAttrValue(const std::string& value)
+    {
+        std::string out;
+        out.reserve(value.size());
+        for (auto c : value)
+        {
+            switch (c)
+            {
+            case '&':
+                out += "&amp;";
+                break;
+            case '<':
+                out += "&lt;";
+                break;
+            case '>':
+                out += "&gt;";
+                break;
+            case '"':
+                out += "&quot;";
+                break;
+            default:
+                out += c;
+                break;
+            }
+        }
+
+        return out;
+    }
 } // namespace
 
 std::unique_ptr<AtlasPacker> AtlasPacker::createPacker(sConfig::Algorithm algorithm, const sConfig& config)
@@ -296,7 +326,7 @@ bool AtlasPacker::generateResFile(cFile& file, const std::string& atlasName)
         }
 
         out += fmt::format("    <{} texture=\"{}\" rect=\"{} {} {} {}\"{} anchor=\"{} {}\" />\n",
-                           spriteId, atlasName,
+                           spriteId, escapeXmlAttrValue(atlasName),
                            pos.x, pos.y, size.width, size.height,
                            hotspotAttr, anchor.x, anchor.y);
     }

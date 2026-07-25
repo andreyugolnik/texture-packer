@@ -233,7 +233,7 @@ bool cImageList::packMultiAtlas(const char* desiredAtlasName, const char* output
 
         const auto atlasName = GenerateAtlasName(desiredAtlasName, atlasIndex);
         if (saveAtlas(packer.get(), atlasName.c_str(), resPathPrefix, xmlFile,
-                      finalSize, spritesArea, startTime)
+                      spritesArea, startTime)
             == false)
         {
             success = false;
@@ -315,7 +315,7 @@ bool cImageList::packSingleAtlas(const char* desiredAtlasName, const char* outpu
     }
 
     auto success = saveAtlas(packer.get(), desiredAtlasName, resPathPrefix, xmlFile,
-                             atlasSize, spritesArea, startTime);
+                             spritesArea, startTime);
 
     if (writeXmlFooter(xmlFile, outputResName) == false)
     {
@@ -394,9 +394,11 @@ bool cImageList::optimizeAtlasSize(ImageList& packedImages, const sSize& maxSize
 
 bool cImageList::saveAtlas(AtlasPacker* packer, const char* desiredAtlasName,
                            const char* resPathPrefix, cFile& xmlFile,
-                           const sSize& atlasSize, uint64_t spritesArea, uint64_t startTime)
+                           uint64_t spritesArea, uint64_t startTime)
 {
     auto& atlas = packer->getBitmap();
+    const auto& atlasSize = atlas.getSize();
+
     cImageSaver saver(atlas, desiredAtlasName);
 
     if (saver.save() == false)
@@ -424,7 +426,9 @@ bool cImageList::saveAtlas(AtlasPacker* packer, const char* desiredAtlasName,
     }
 
     const auto atlasArea = static_cast<size_t>(atlasSize.width) * atlasSize.height;
-    const auto percent = static_cast<uint32_t>(100.0 * spritesArea / atlasArea);
+    const auto percent = atlasArea != 0
+        ? static_cast<uint32_t>(100.0 * spritesArea / atlasArea)
+        : 0u;
 
     cLog::Info("Atlas '{}' ({} x {}, fill: {}%) was created in {:.2f} ms.",
                outputAtlasName,

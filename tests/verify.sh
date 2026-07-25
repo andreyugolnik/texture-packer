@@ -254,6 +254,39 @@ check_bounds() {
     fi
 }
 
+# The texture attribute value is XML-escaped, so a path with & < > " stays valid.
+check_xml_escape() {
+    total=$((total + 1))
+    local xml="$OUTPUT/esc.xml"
+    (cd "$VERIFY_DIR" && "$TEXPACKER" sprites --atlas="$OUTPUT/a&b.png" --xml="$xml") >/dev/null 2>&1 || true
+    if [ -f "$xml" ] && grep -q 'texture="[^"]*&amp;' "$xml"; then
+        echo "  OK    xmlescape (& -> &amp;)"
+        passed=$((passed + 1))
+    else
+        echo "  FAIL  xmlescape (texture value not escaped)"
+        failed=$((failed + 1))
+    fi
+}
+
+# The success log must report the actual saved atlas size, not the pre-trim one.
+check_reported_size() {
+    total=$((total + 1))
+    local atlas="$OUTPUT/rep.png" out rep
+    out=$( (cd "$VERIFY_DIR" && "$TEXPACKER" sprites --border=64 --atlas="$atlas") 2>/dev/null || true )
+    rep=$(echo "$out" | grep -oE '\([0-9]+ x [0-9]+,' | grep -oE '[0-9]+ x [0-9]+' | head -1 || true)
+    local rep_w="${rep% x *}" rep_h="${rep#* x }"
+    local real_w real_h
+    real_w=$(png_dim "$atlas" 16)
+    real_h=$(png_dim "$atlas" 20)
+    if [ -n "$rep" ] && [ "$rep_w" = "$real_w" ] && [ "$rep_h" = "$real_h" ]; then
+        echo "  OK    reportedsize (${real_w}x${real_h})"
+        passed=$((passed + 1))
+    else
+        echo "  FAIL  reportedsize (reported '${rep}', actual ${real_w}x${real_h})"
+        failed=$((failed + 1))
+    fi
+}
+
 if $UPDATE; then
     echo "Updating reference files..."
 else
@@ -294,6 +327,10 @@ if ! $UPDATE; then
     check_bounds kdtreeborder sprites-border --algorithm=kdtree --border=8
     check_bounds autoborder   sprites-border --algorithm=auto   --border=8
     check_bounds padbounds    sprites-pad    --padding=0
+
+    # Regression: XML escaping and accurate reported atlas size
+    check_xml_escape
+    check_reported_size
 fi
 
 echo ""

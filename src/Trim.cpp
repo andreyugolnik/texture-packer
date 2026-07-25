@@ -11,6 +11,8 @@
 #include "Config.h"
 #include "Log.h"
 
+#include <algorithm>
+
 bool cTrim::doTrim(const cBitmap& input, cBitmap& output, sOffset& offset) const
 {
     auto left = findLeft(input);
@@ -162,10 +164,12 @@ bool cTrimRightBottom::trim(const char* /*path*/, const cBitmap& input)
 
     const auto border = m_config.border;
 
-    const auto width = cAtlasSize::FixSize(findRight(input) + border, m_config.pot);
-    const auto height = cAtlasSize::FixSize(findBottom(input) + border, m_config.pot);
-
     auto& size = input.getSize();
+
+    // findRight/findBottom return the last index, so +1 converts it to a count.
+    const auto width = std::min(cAtlasSize::FixSize(findRight(input) + 1 + border, m_config.pot), size.width);
+    const auto height = std::min(cAtlasSize::FixSize(findBottom(input) + 1 + border, m_config.pot), size.height);
+
     if (width == size.width && height == size.height)
     {
         return false;

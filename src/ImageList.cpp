@@ -338,7 +338,10 @@ bool cImageList::packImagesToMaxSize(ImageList& remainingImages, const sSize& ma
         std::stable_sort(sorted.begin(), sorted.end(), strategy.comparator);
 
         auto packer = AtlasPacker::createPacker(strategy.algorithm, m_config);
-        packer->setSize(maxSize);
+        if (packer->setSize(maxSize) == false)
+        {
+            continue;
+        }
 
         ImageList packed;
         for (auto img : sorted)
@@ -542,7 +545,11 @@ bool cImageList::findMinimalAtlasSize(AtlasPacker* packer, ImageList& images, co
 
 bool cImageList::prepareSize(AtlasPacker* packer, const sSize& atlasSize, const ImageList& images)
 {
-    packer->setSize(atlasSize);
+    if (packer->setSize(atlasSize) == false)
+    {
+        return false;
+    }
+
     for (auto img : images)
     {
         if (packer->add(img) == false)

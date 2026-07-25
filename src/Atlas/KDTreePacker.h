@@ -34,7 +34,7 @@ public:
     KDTreePacker(const KDTreePacker&) = delete;
     KDTreePacker& operator=(const KDTreePacker&) = delete;
 
-    void setSize(const sSize& size) override;
+    bool setSize(const sSize& size) override;
     bool add(const cImage* image) override;
     void makeAtlas(bool overlay) override;
 

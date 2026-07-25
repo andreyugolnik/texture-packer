@@ -21,15 +21,23 @@ KDTreePacker::~KDTreePacker()
     delete m_root;
 }
 
-void KDTreePacker::setSize(const sSize& size)
+bool KDTreePacker::setSize(const sSize& size)
 {
     const auto border = m_config.border;
 
     delete m_root;
-    m_root = new cKDNode({ border, border, size.width - border, size.height - border }, m_config.padding);
+    m_root = nullptr;
 
     m_nodes.clear();
     m_atlas.setSize(size);
+
+    if (size.width > border * 2 && size.height > border * 2)
+    {
+        m_root = new cKDNode({ border, border, size.width - border, size.height - border }, m_config.padding);
+        return true;
+    }
+
+    return false;
 }
 
 bool KDTreePacker::add(const cImage* image)

@@ -205,6 +205,55 @@ check_trimid() {
     fi
 }
 
+# Assert every sprite is packed and its rect lies fully inside the atlas.
+# Guards the KDTree border-underflow and the right/bottom trim off-by-one:
+# both produced an atlas smaller than the rects referencing it. Single-atlas
+# only (all rects share one texture).
+png_dim() { # file byte-offset -> big-endian uint32
+    od -An -tu1 -j"$2" -N4 "$1" | awk '{for(i=1;i<=NF;i++)v=v*256+$i} END{print v+0}'
+}
+check_bounds() {
+    local name="$1" dir="$2"
+    shift 2
+    total=$((total + 1))
+
+    local atlas="$OUTPUT/$name.png" xml="$OUTPUT/$name.xml"
+    if ! (cd "$VERIFY_DIR" && "$TEXPACKER" "$dir" --atlas="$atlas" --xml="$xml" "$@") >/dev/null 2>&1; then
+        echo "  FAIL  $name (texpacker exited with error)"
+        failed=$((failed + 1))
+        return
+    fi
+
+    local n_input n_packed
+    n_input=$(find "$VERIFY_DIR/$dir" -type f -name '*.png' | wc -l | tr -d ' ')
+    n_packed=$(grep -c 'texture=' "$xml" || true)
+    if [ "$n_packed" -ne "$n_input" ]; then
+        echo "  FAIL  $name (packed $n_packed of $n_input sprites)"
+        failed=$((failed + 1))
+        return
+    fi
+
+    local aw ah rects bad=0
+    aw=$(png_dim "$atlas" 16)
+    ah=$(png_dim "$atlas" 20)
+    rects=$(grep -oE 'rect="[0-9]+ [0-9]+ [0-9]+ [0-9]+"' "$xml" \
+        | sed -E 's/rect="([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)"/\1 \2 \3 \4/' || true)
+    while read -r l t w h; do
+        [ -n "$l" ] || continue
+        if [ "$((l + w))" -gt "$aw" ] || [ "$((t + h))" -gt "$ah" ]; then
+            bad=1
+        fi
+    done <<< "$rects"
+
+    if [ "$bad" -eq 0 ]; then
+        echo "  OK    $name (rects within ${aw}x${ah})"
+        passed=$((passed + 1))
+    else
+        echo "  FAIL  $name (rect exceeds atlas ${aw}x${ah})"
+        failed=$((failed + 1))
+    fi
+}
+
 if $UPDATE; then
     echo "Updating reference files..."
 else
@@ -240,6 +289,11 @@ if ! $UPDATE; then
     # Feature behaviors
     check_trim
     check_trimid
+
+    # Regression: rects must stay inside the atlas (border underflow / trim off-by-one)
+    check_bounds kdtreeborder sprites-border --algorithm=kdtree --border=8
+    check_bounds autoborder   sprites-border --algorithm=auto   --border=8
+    check_bounds padbounds    sprites-pad    --padding=0
 fi
 
 echo ""

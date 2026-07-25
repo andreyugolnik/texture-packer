@@ -34,18 +34,21 @@ MaxRectsPacker::~MaxRectsPacker()
 {
 }
 
-void MaxRectsPacker::setSize(const sSize& size)
+bool MaxRectsPacker::setSize(const sSize& size)
 {
     const auto border = m_config.border;
 
     m_placed.clear();
     m_freeRects.clear();
+    m_atlas.setSize(size);
+
     if (size.width > border * 2 && size.height > border * 2)
     {
         m_freeRects.push_back({ border, border, size.width - border, size.height - border });
+        return true;
     }
 
-    m_atlas.setSize(size);
+    return false;
 }
 
 bool MaxRectsPacker::findPosition(uint32_t width, uint32_t height, sRect& out) const

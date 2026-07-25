@@ -28,7 +28,9 @@ public:
     AtlasPacker(const sConfig& config);
     virtual ~AtlasPacker();
 
-    virtual void setSize(const sSize& size) = 0;
+    // Returns false if the atlas is too small to hold any sprite (e.g. smaller
+    // than the border); the caller then skips adding and tries a larger size.
+    virtual bool setSize(const sSize& size) = 0;
     virtual bool add(const cImage* image) = 0;
     virtual void makeAtlas(bool overlay) = 0;
 

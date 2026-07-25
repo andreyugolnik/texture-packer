@@ -28,7 +28,7 @@ public:
     explicit MaxRectsPacker(const sConfig& config);
     ~MaxRectsPacker() override;
 
-    void setSize(const sSize& size) override;
+    bool setSize(const sSize& size) override;
     bool add(const cImage* image) override;
     void makeAtlas(bool overlay) override;
 

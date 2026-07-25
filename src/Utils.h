@@ -19,7 +19,6 @@ constexpr std::size_t litLen(const char (&)[N])
 }
 
 uint64_t getCurrentTime();
-const char* formatNum(int num, char delimiter = '\'');
 const char* toString(bool enabled);
 
 bool isOption(const char* arg, const char* name);

@@ -66,7 +66,7 @@ void KDTreePacker::makeAtlas(bool overlay)
 
 uint32_t KDTreePacker::getRectsCount() const
 {
-    return (uint32_t)m_nodes.size();
+    return static_cast<uint32_t>(m_nodes.size());
 }
 
 const cImage* KDTreePacker::getImageByIndex(uint32_t idx) const

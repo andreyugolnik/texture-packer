@@ -123,7 +123,7 @@ cImageList::cImageList(const sConfig& config, uint32_t reserve)
     : m_config(config)
     , m_size(config)
     , m_trim(config.trimSprite
-                 ? new cTrim()
+                 ? std::make_unique<cTrim>()
                  : nullptr)
 {
     m_images.reserve(reserve);
@@ -135,8 +135,6 @@ cImageList::~cImageList()
     {
         delete img;
     }
-
-    delete m_trim;
 }
 
 cImageList::Result cImageList::loadImage(const std::string& path, uint32_t trimCount)
@@ -148,7 +146,7 @@ cImageList::Result cImageList::loadImage(const std::string& path, uint32_t trimC
 
     std::unique_ptr<cImage> image(new cImage());
 
-    if (image->load(path.c_str(), trimCount, m_trim) == false)
+    if (image->load(path.c_str(), trimCount, m_trim.get()) == false)
     {
         return Result::CannotOpen;
     }

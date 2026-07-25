@@ -83,6 +83,11 @@ bool cImage::IsImage(const char* path)
         || ext == ".tga";
 }
 
+void cImage::StbDeleter::operator()(uint8_t* data) const
+{
+    stbi_image_free(data);
+}
+
 cImage::~cImage()
 {
     clear();
@@ -90,12 +95,7 @@ cImage::~cImage()
 
 void cImage::clear()
 {
-    if (m_stbImageData != nullptr)
-    {
-        stbi_image_free(m_stbImageData);
-        m_stbImageData = nullptr;
-    }
-
+    m_stbImageData.reset();
     m_bitmap.clear();
 }
 
@@ -121,7 +121,7 @@ bool cImage::load(const char* path, uint32_t trimPath, cTrim* trim)
     int width = 0;
     int height = 0;
     int bpp = 0;
-    m_stbImageData = stbi_load(path, &width, &height, &bpp, 4);
+    m_stbImageData.reset(stbi_load(path, &width, &height, &bpp, 4));
     if (m_stbImageData == nullptr)
     {
         return false;
@@ -132,7 +132,7 @@ bool cImage::load(const char* path, uint32_t trimPath, cTrim* trim)
         static_cast<uint32_t>(height)
     };
 
-    m_bitmap.setBitmap(m_originalSize, m_stbImageData);
+    m_bitmap.setBitmap(m_originalSize, m_stbImageData.get());
 
     if (trim != nullptr && trim->trim(path, m_bitmap))
     {

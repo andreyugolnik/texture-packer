@@ -70,7 +70,7 @@ private:
 private:
     const sConfig& m_config;
     cAtlasSize m_size;
-    cTrim* m_trim;
+    std::unique_ptr<cTrim> m_trim;
 
 private:
     ImageList m_images;

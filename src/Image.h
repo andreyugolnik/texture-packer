@@ -10,6 +10,7 @@
 
 #include "Types/Bitmap.h"
 
+#include <memory>
 #include <string>
 
 class cTrim;
@@ -52,12 +53,19 @@ public:
     }
 
 private:
+    // stb buffers must be released with stbi_image_free, not delete.
+    struct StbDeleter
+    {
+        void operator()(uint8_t* data) const;
+    };
+
+private:
     std::string m_name;
     std::string m_spriteId;
 
     sSize m_originalSize;
     sOffset m_offset;
 
-    uint8_t* m_stbImageData = nullptr;
+    std::unique_ptr<uint8_t, StbDeleter> m_stbImageData;
     cBitmap m_bitmap;
 };

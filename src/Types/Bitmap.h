@@ -13,23 +13,20 @@
 class cBitmap final
 {
 public:
+    cBitmap() = default;
     ~cBitmap();
+
+    cBitmap(const cBitmap&) = delete;
+    cBitmap& operator=(const cBitmap&) = delete;
+
+    cBitmap(cBitmap&& other) noexcept;
+    cBitmap& operator=(cBitmap&& other) noexcept;
 
     void clear();
 
     bool createBitmap(const sSize& size);
     void setSize(const sSize& size);
     void setBitmap(const sSize& size, void* data);
-
-    cBitmap& operator=(const cBitmap& other);
-    cBitmap& operator=(cBitmap&& other) noexcept;
-
-    template <typename T>
-    void moveAndSet(T& me, T& other, T value)
-    {
-        me = other;
-        other = value;
-    }
 
     const sSize& getSize() const
     {
@@ -60,6 +57,13 @@ public:
     }
 
 private:
+    template <typename T>
+    void moveAndSet(T& me, T& other, T value)
+    {
+        me = other;
+        other = value;
+    }
+
     sSize m_size;
 
     bool m_manageData = false;

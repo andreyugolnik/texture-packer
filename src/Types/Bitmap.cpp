@@ -65,14 +65,11 @@ void cBitmap::setBitmap(const sSize& size, void* data)
     m_data = static_cast<Pixel*>(data);
 }
 
-cBitmap& cBitmap::operator=(const cBitmap& other)
+cBitmap::cBitmap(cBitmap&& other) noexcept
 {
-    if (this != &other && createBitmap(other.m_size))
-    {
-        std::copy(other.getData(), other.getData() + static_cast<size_t>(other.m_size.width) * other.m_size.height, m_data);
-    }
-
-    return *this;
+    moveAndSet(m_size, other.m_size, {});
+    moveAndSet(m_manageData, other.m_manageData, false);
+    moveAndSet(m_data, other.m_data, static_cast<Pixel*>(nullptr));
 }
 
 cBitmap& cBitmap::operator=(cBitmap&& other) noexcept
@@ -82,7 +79,6 @@ cBitmap& cBitmap::operator=(cBitmap&& other) noexcept
         clear();
 
         moveAndSet(m_size, other.m_size, {});
-
         moveAndSet(m_manageData, other.m_manageData, false);
         moveAndSet(m_data, other.m_data, static_cast<Pixel*>(nullptr));
     }

@@ -236,7 +236,7 @@ int main(int argc, char* argv[])
 
 void showBanner()
 {
-    cLog::Info("Texture Packer v1.5.1");
+    cLog::Info("Texture Packer v1.6.0");
     cLog::Info("Copyright (c) 2017-2026 Andrey A. Ugolnik.");
 }
 
